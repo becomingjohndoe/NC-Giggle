@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "NC-Giggle",
+    "slug": "NC-Giggle",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "NC-Giggle"
+}
