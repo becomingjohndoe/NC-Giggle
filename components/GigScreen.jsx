@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
 import { useState } from "react";
 import { getGigsForHomepage } from "../utils/api";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function GigScreen() {
   const [results, setResults] = useState([]);
@@ -19,6 +20,7 @@ export default function GigScreen() {
 
 
   return (
+    <ScrollView>
     <View style={styles.container}>
       {results.map((gig)=>{
         return ( 
@@ -32,6 +34,7 @@ export default function GigScreen() {
       })}
       <StatusBar style="auto" />
     </View>
+    </ScrollView>
   );
 }
 
