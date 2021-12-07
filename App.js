@@ -9,6 +9,7 @@ import Home from "./components/Home";
 import { onAuthStateChanged, getAuth } from "@firebase/auth";
 import { checkNewuser } from "./firebase";
 import Profile from "./components/Profile";
+import GigScreen from './components/GigScreen';
 
 export default function App() {
 	const [user, setUser] = React.useState(null);
@@ -51,7 +52,7 @@ export default function App() {
 						) : (
 							<Stack.Screen
 								name="Home"
-								component={Home}
+								component={GigScreen}
 								options={{ headerShown: false }}
 							/>
 						)}
