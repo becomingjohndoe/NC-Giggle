@@ -14,9 +14,11 @@ import {
 import {
 	doc,
 	setDoc,
+	getDoc,
 	getFirestore,
 	collection,
 	addDoc,
+	updateDoc,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -37,22 +39,30 @@ const auth = getAuth();
 const provider = new GoogleAuthProvider();
 const db = getFirestore();
 
-export const createUser = async (email, password, navigation) => {
+export const createUser = async (email, password) => {
 	createUserWithEmailAndPassword(auth, email, password)
-		.then((userCredential) => {
-			try {
-				navigation.navigate("Home");
-			} catch (err) {
-				console.log(err);
-			}
+		.then(() => {
+			console.log("User created successfully");
 		})
 		.catch((error) => {
-			console.log(error);
+			alert(error);
+		});
+};
+
+export const signIn = async (email, password) => {
+	signInWithEmailAndPassword(auth, email, password)
+		.then(() => {
+			console.log("User signed in successfully");
+		})
+		.catch((error) => {
+			alert(error);
 		});
 };
 
 export const signInWithGoogle = async () => {
-	signInWithRedirect(auth, provider);
+	signInWithRedirect(auth, provider).catch(() => {
+		alert("Error signing in");
+	});
 };
 
 export const signOutUser = async () => {
@@ -64,7 +74,7 @@ export const signOutUser = async () => {
 // use getAuth to get auth object
 onAuthStateChanged(auth, (user) => {
 	try {
-		if (user) {
+		if (checkNewuser()) {
 			const userData = {
 				email: user.email,
 				uid: user.uid,
@@ -75,6 +85,7 @@ onAuthStateChanged(auth, (user) => {
 				bio: "",
 				rating: 0,
 				awards: [],
+				genrePrefrences: [],
 			};
 			setDoc(doc(db, "users", user.uid), userData);
 		}
@@ -82,5 +93,25 @@ onAuthStateChanged(auth, (user) => {
 		console.log(error);
 	}
 });
+
+export const checkNewuser = async () => {
+	if (auth.currentUser) {
+		const docRef = doc(db, "users", auth.currentUser.uid);
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			if (docSnap.data().genrePrefrences.length === 0) {
+				// set genre preferences
+				return true;
+			}
+		}
+	} else {
+		return false;
+	}
+};
+
+export const updateUser = async (userData) => {
+	const userRef = doc(db, "users", auth.currentUser.uid);
+	await updateDoc(userRef, userData);
+};
 
 export default app;
