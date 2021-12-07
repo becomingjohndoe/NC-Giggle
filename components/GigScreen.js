@@ -25,7 +25,9 @@ export default function GigScreen() {
           <View key={gig.id}>
             <Text>{gig.name}</Text>
             <Text>{gig.dates.start.localDate}</Text>
-            <Image source={{uri:gig.images[0].url}} style={{ width: 375, height: 200 }}/>
+            <Text>{gig.dates.status.code}</Text>
+            <Text>{gig._embedded.venues[0].name}</Text>
+            <Image source={{uri:gig.images[4].url}} style={{ width: 375, height: 200 }}/>
           </View>        )
       })}
       <StatusBar style="auto" />

@@ -7,7 +7,7 @@ const ticketmasterApi = axios.create({
 
 export const getGigsForHomepage = () => {
   return ticketmasterApi
-    .get("discovery/v2/events?apikey=AQ2psvkdE5dP1AD9SEmAPZ1Kb5AALDCG&locale=en-gb&size=50&segmentId=KZFzniwnSyZfZ7v7nJ&city=leeds")
+    .get("discovery/v2/events?apikey=AQ2psvkdE5dP1AD9SEmAPZ1Kb5AALDCG&locale=en-gb&size=50&segmentId=KZFzniwnSyZfZ7v7nJ")
     .then((response) => {
       // setResults(response);
       console.log(response.data._embedded.events);
@@ -17,3 +17,4 @@ export const getGigsForHomepage = () => {
       console.dir(err);
     });
 };
+
