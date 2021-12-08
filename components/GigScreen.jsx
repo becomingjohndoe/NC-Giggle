@@ -49,7 +49,7 @@ const ExpandableComponent = ({item, onClickFunction}) => {
         <Text style={styles.itemText}>
         {item.category_name}
         </Text>
-
+        <Image source={{uri:item.image}} style={{ width: 375, height: 200 }}/>
       </TouchableOpacity>
       <View style={{
         height: layoutHeight,
@@ -61,7 +61,7 @@ const ExpandableComponent = ({item, onClickFunction}) => {
               key={key} style={styles.content}
               >
                 <Text style={styles.text}>
-                  {key}. {item.val}
+                {item.val}
                 </Text>
                 <View style={styles.seperator} />
               </TouchableOpacity>
@@ -76,6 +76,19 @@ export default function GigScreen() {
   const [results, setResults] = useState([]);
   const [multiSelect, setMultiSelect] = useState(false);
   const [listDataSource, setListDataSource] = useState(CONTENT);
+
+  const contentFormat = (results) => {return results.map((gig)=>{
+    console.log(gig, "one gig <<<<<")
+    return {isExpanded: false,
+        category_name: gig.name,
+        id: gig.id,
+        image: gig.images[4].url,
+        subcategory: [
+          {val: gig.dates.start.localDate},
+          {val: gig.dates.status.code},
+          {val: gig._embedded.venues[0].name}
+        ]}
+  })} 
 
 
   const updateLayout = (index) => {
@@ -94,15 +107,19 @@ export default function GigScreen() {
     setListDataSource(array)
   }
 
-  // useEffect(() => {
-  //   getGigsForHomepage()
-  //     .then((results) => {
-  //       setResults(results);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    getGigsForHomepage()
+      .then((results) => {
+        setResults(results);
+        let newContentFormat = contentFormat(results)
+        console.log(newContentFormat, "<<<<<<")
+        setListDataSource(newContentFormat)
+         console.log(listDataSource, "after ApI response")
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
 
   return (
@@ -142,7 +159,7 @@ export default function GigScreen() {
   //     {results.map((gig)=>{
   //       return ( 
   //         <View key={gig.id}>
-  //           <Text>{gig.name}</Text>
+  //           <Text>{gig.name}</Text
   //           <Text>{gig.dates.start.localDate}</Text>
   //           <Text>{gig.dates.status.code}</Text>
   //           <Text>{gig._embedded.venues[0].name}</Text>
