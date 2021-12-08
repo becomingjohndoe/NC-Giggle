@@ -10,6 +10,7 @@ import { onAuthStateChanged, getAuth } from "@firebase/auth";
 import { checkNewuser } from "./firebase";
 import Profile from "./components/Profile";
 import GigScreen from './components/GigScreen';
+import DrawerNavigation from "./components/Navigation";
 
 export default function App() {
 	const [user, setUser] = React.useState(null);
@@ -36,8 +37,9 @@ export default function App() {
 	}, []);
 	if (isLoading) return <Text>Loading...</Text>;
 	return (
+		<>
 		<NavigationContainer>
-			<Stack.Navigator>
+			<DrawerNavigation />
 				{user ? (
 					<>
 						{isNewUser ? (
@@ -63,7 +65,9 @@ export default function App() {
 						<Stack.Screen name="Sign Up" component={SignUp} />
 					</>
 				)}
-			</Stack.Navigator>
 		</NavigationContainer>
-	);
+</>
+);
+
+
 }
