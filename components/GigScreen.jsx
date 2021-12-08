@@ -13,7 +13,8 @@ const transition = (
     <Transition.Out type="fade" durationMs={200}/>
   </Transition.Together>
 )
-import { signOutUser } from "../firebase";
+
+import DrawerNavigation from "./Navigation";
 
 export default function GigScreen() {
 	const [results, setResults] = useState([]);
@@ -32,8 +33,8 @@ export default function GigScreen() {
   const ref = React.useRef()
 
   return (
+    <>
     <ScrollView>
-      <Button title="sign out" onPress={signOutUser} />
     <Transitioning.View 
     ref={ref}
     transition={transition}
@@ -66,6 +67,7 @@ export default function GigScreen() {
       <StatusBar style="auto" />
     </Transitioning.View>
     </ScrollView> 
+    </>
   );
 }
 

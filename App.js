@@ -40,7 +40,7 @@ export default function App() {
 	return (
 		<>
 		<NavigationContainer>
-			<DrawerNavigation />
+			<Stack.Navigator>
 				{user ? (
 					<>
 						{isNewUser ? (
@@ -53,11 +53,14 @@ export default function App() {
 								/>
 							</>
 						) : (
+							<Stack.Group>
+							<Stack.Screen name="navigator" component={DrawerNavigation} options={{ headerShown: false }}/>
 							<Stack.Screen
 								name="Home"
 								component={GigScreen}
-								// options={{ headerShown: false }}
-							/>
+								options={{ headerShown: false }}
+							/> 
+							</Stack.Group>
 						)}
 					</>
 				) : (
@@ -66,6 +69,7 @@ export default function App() {
 						<Stack.Screen name="Sign Up" component={SignUp} />
 					</>
 				)}
+			</Stack.Navigator>
 		</NavigationContainer>
 </>
 );
