@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Button } from "react-native";
 import { useState } from "react";
 import { getGigsForHomepage } from "../utils/api";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
@@ -13,25 +13,27 @@ const transition = (
     <Transition.Out type="fade" durationMs={200}/>
   </Transition.Together>
 )
+import { signOutUser } from "../firebase";
 
 export default function GigScreen() {
-  const [results, setResults] = useState([]);
+	const [results, setResults] = useState([]);
 
-  useEffect(() => {
-    getGigsForHomepage()
-      .then((results) => {
-        setResults(results);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
+	useEffect(() => {
+		getGigsForHomepage()
+			.then((results) => {
+				setResults(results);
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
 
   const [currentIndex, setCurrentIndex] = useState(null)
   const ref = React.useRef()
 
   return (
     <ScrollView>
+      <Button title="sign out" onPress={signOutUser} />
     <Transitioning.View 
     ref={ref}
     transition={transition}
