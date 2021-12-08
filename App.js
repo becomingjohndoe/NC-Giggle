@@ -9,12 +9,12 @@ import Home from "./components/Home";
 import { onAuthStateChanged, getAuth } from "@firebase/auth";
 import { checkNewuser } from "./firebase";
 import Profile from "./components/Profile";
-import GigScreen from './components/GigScreen';
+import GigScreen from "./components/GigScreen";
 
 export default function App() {
 	const [user, setUser] = React.useState(null);
 	const [isLoading, setIsLoading] = React.useState(true);
-	const [isNewUser, setIsNewUser] = React.useState(false);
+	const [isNewUser, setIsNewUser] = React.useState(true);
 	const auth = getAuth();
 	const Stack = createNativeStackNavigator();
 
@@ -25,13 +25,14 @@ export default function App() {
 			if (user) {
 				console.log("user is logged in");
 				setUser(user);
-				setIsLoading(false);
+				checkNewuser().then((u) => {
+					setIsNewUser(u);
+				});
 			} else {
 				console.log("user is not logged in");
 				setUser(null);
-				setIsLoading(false);
 			}
-			setIsNewUser(checkNewuser());
+			setIsLoading(false);
 		});
 	}, []);
 	if (isLoading) return <Text>Loading...</Text>;
@@ -53,7 +54,7 @@ export default function App() {
 							<Stack.Screen
 								name="Home"
 								component={GigScreen}
-								options={{ headerShown: false }}
+								// options={{ headerShown: false }}
 							/>
 						)}
 					</>
