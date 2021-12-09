@@ -8,6 +8,29 @@ import {ExpandableListView} from 'react-native-expandable-listview';
 
 //Dummy content
 //
+const CONTENT = [
+  {isExpanded: false,
+    category_name: 'item 1',
+    subcategory: [
+      {id: 1, val: 'Sub 1'},
+      {id: 2, val: 'Sub 2'}
+    ]
+  },
+  {isExpanded: false,
+    category_name: 'item 2',
+    subcategory: [
+      {id: 3, val: 'Sub 3'},
+      {id: 4, val: 'Sub 4'}
+    ]
+  },
+  {isExpanded: false,
+    category_name: 'item 3',
+    subcategory: [
+      {id: 5, val: 'Sub 5'},
+      {id: 6, val: 'Sub 6'}
+    ]
+  }
+];
 
 const ExpandableComponent = ({item, onClickFunction}) => {
   const [layoutHeight, setLayOutHeight] = useState(0);
