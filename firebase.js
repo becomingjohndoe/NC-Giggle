@@ -60,13 +60,29 @@ export const signIn = async (email, password) => {
 };
 
 export const signInWithGoogle = async () => {
-	signInWithRedirect(auth, provider).catch(() => {
-		alert("Error signing in");
-	});
+	signInWithRedirect(auth, provider);
+};
+
+export const getGoogleLogIn = async () => {
+	getRedirectResult(auth, provider)
+		.then((result) => {
+			console.log(result);
+		})
+		.catch((error) => {
+			console.log(error);
+		});
 };
 
 export const signOutUser = async () => {
 	signOut(auth);
+};
+
+export const checkNewuser = async () => {
+	if (auth.currentUser) {
+		const docRef = doc(db, "users", auth.currentUser.uid);
+		const docSnap = await getDoc(docRef);
+		return !docSnap.exists();
+	}
 };
 
 // use this when you need user information on a certain page/component
@@ -74,40 +90,28 @@ export const signOutUser = async () => {
 // use getAuth to get auth object
 onAuthStateChanged(auth, (user) => {
 	try {
-		if (checkNewuser()) {
-			const userData = {
-				email: user.email,
-				uid: user.uid,
-				profile_picture: user.photoURL,
-				displayName: user.displayName,
-				age: 0,
-				city: "",
-				bio: "",
-				rating: 0,
-				awards: [],
-				genrePrefrences: [],
-			};
-			setDoc(doc(db, "users", user.uid), userData);
-		}
+		checkNewuser().then((u) => {
+			if (u) {
+				const userData = {
+					email: user.email,
+					uid: user.uid,
+					profile_picture: user.photoURL,
+					displayName: user.displayName,
+					age: 0,
+					city: "",
+					bio: "",
+					rating: 0,
+					awards: [],
+					genrePrefrences: [],
+					isNewUser: true,
+				};
+				setDoc(doc(db, "users", user.uid), userData);
+			}
+		});
 	} catch (error) {
 		console.log(error);
 	}
 });
-
-export const checkNewuser = async () => {
-	if (auth.currentUser) {
-		const docRef = doc(db, "users", auth.currentUser.uid);
-		const docSnap = await getDoc(docRef);
-		if (docSnap.exists()) {
-			if (docSnap.data().genrePrefrences.length === 0) {
-				// set genre preferences
-				return true;
-			}
-		}
-	} else {
-		return false;
-	}
-};
 
 export const updateUser = async (userData) => {
 	const userRef = doc(db, "users", auth.currentUser.uid);

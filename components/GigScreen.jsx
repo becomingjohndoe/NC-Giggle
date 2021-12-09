@@ -3,11 +3,6 @@ import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Image, SafeAreaView, ScrollView, TouchableOpacity, LayoutAnimation, Platform } from "react-native";
 import { useState } from "react";
 import { getGigsForHomepage } from "../utils/api";
-import {ExpandableListView} from 'react-native-expandable-listview';
-
-
-//Dummy content
-//
 
 const ExpandableComponent = ({item, onClickFunction}) => {
   const [layoutHeight, setLayOutHeight] = useState(0);
@@ -99,6 +94,10 @@ export default function GigScreen() {
   }, []);
 
 
+
+  const [currentIndex, setCurrentIndex] = useState(null)
+  const ref = React.useRef()
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -129,23 +128,6 @@ export default function GigScreen() {
         </ScrollView>
       </View>
     </SafeAreaView>
-
-
-  // <ScrollView>
-  //   <View style={styles.container}>
-  //     {results.map((gig)=>{
-  //       return ( 
-  //         <View key={gig.id}>
-  //           <Text>{gig.name}</Text
-  //           <Text>{gig.dates.start.localDate}</Text>
-  //           <Text>{gig.dates.status.code}</Text>
-  //           <Text>{gig._embedded.venues[0].name}</Text>
-  //           <Image source={{uri:gig.images[4].url}} style={{ width: 375, height: 200 }}/>
-  //         </View>      )
-  //     })}
-  //     <StatusBar style="auto" />
-  //     </View>  
-  //   </ScrollView>
   );
 }
 
@@ -191,5 +173,25 @@ const styles = StyleSheet.create({
     height: 0.5,
     backgroundColor: '#c8c8c8',
     width: '100%'
+  },
+  gigContainer: {
+    flexGrow: 0,
+  },
+  gigCard: {
+    flexGrow: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  gigInfo: {
+    fontSize: 20,
+    fontWeight: '700'
+  },
+  gigInfoBody: {
+    fontSize: 15,
+    lineHeight: 15 * 1.5,
+    textAlign: 'center',
+    marginTop: 20,
   }
 });
+
+  
