@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Button } from "react-native";
 import Login from "./components/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -9,7 +9,8 @@ import Home from "./components/Home";
 import { onAuthStateChanged, getAuth } from "@firebase/auth";
 import { checkNewuser } from "./firebase";
 import Profile from "./components/Profile";
-import GigScreen from "./components/GigScreen";
+import GigScreen from './components/GigScreen';
+import DrawerNavigation from "./components/Navigation";
 
 export default function App() {
 	const [user, setUser] = React.useState(null);
@@ -37,6 +38,7 @@ export default function App() {
 	}, []);
 	if (isLoading) return <Text>Loading...</Text>;
 	return (
+		<>
 		<NavigationContainer>
 			<Stack.Navigator>
 				{user ? (
@@ -51,11 +53,9 @@ export default function App() {
 								/>
 							</>
 						) : (
-							<Stack.Screen
-								name="Home"
-								component={GigScreen}
-								// options={{ headerShown: false }}
-							/>
+							<Stack.Group>
+							<Stack.Screen name="navigator" component={DrawerNavigation} options={{ headerShown: false }}/>
+							</Stack.Group>
 						)}
 					</>
 				) : (
@@ -66,5 +66,7 @@ export default function App() {
 				)}
 			</Stack.Navigator>
 		</NavigationContainer>
-	);
+</>
+);
+
 }
