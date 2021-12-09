@@ -14,8 +14,6 @@ const transition = (
   </Transition.Together>
 )
 
-import DrawerNavigation from "./Navigation";
-
 export default function GigScreen() {
 	const [results, setResults] = useState([]);
 
