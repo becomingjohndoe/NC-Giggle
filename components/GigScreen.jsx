@@ -14,8 +14,6 @@ import {
 import { useState } from "react";
 import { getGigsForHomepage } from "../utils/api";
 
-//Dummy content
-//
 const CONTENT = [
 	{
 		isExpanded: false,
@@ -55,7 +53,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 	}, [item.isExpanded]);
 
 	return (
-		<View style={styles.container}>
+		<View>
 			<TouchableOpacity style={styles.item} onPress={onClickFunction}>
 				<Text style={styles.itemText}>{item.category_name}</Text>
 				<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
