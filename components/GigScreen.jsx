@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,6 +11,7 @@ import {
   LayoutAnimation,
   Platform,
 } from "react-native";
+import { AppContext } from "../context/context";
 import { useState } from "react";
 import { getGigsForHomepage } from "../utils/api";
 import { ExpandableListView } from "react-native-expandable-listview";
@@ -87,8 +88,11 @@ export default function GigScreen() {
   const [results, setResults] = useState([]);
   const [multiSelect, setMultiSelect] = useState(false);
   const [listDataSource, setListDataSource] = useState(CONTENT);
+  const { currentGigs, setCurrentGigs } = useContext(AppContext);
 
   const contentFormat = (results) => {
+    setCurrentGigs(results);
+    console.log(currentGigs);
     return results.map((gig) => {
       // console.log(gig, "one gig <<<<<");
       return {
