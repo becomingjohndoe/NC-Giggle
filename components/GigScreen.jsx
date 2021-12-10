@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect } from "react";
 import {
   StyleSheet,
@@ -82,13 +81,14 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
             createChatGroup(item.id).then(()=>{addUserToChatGroup(item.id)})
           }}
         />
+
       </View>
     </View>
   );
 };
 
-export default function GigScreen() {
-  const [results, setResults] = useState([]);
+export default function GigScreen(props) {
+
   const [multiSelect, setMultiSelect] = useState(false);
   const [listDataSource, setListDataSource] = useState(CONTENT);
 
@@ -126,9 +126,8 @@ export default function GigScreen() {
   };
 
   useEffect(() => {
-    getGigsForHomepage()
+    getGigsForHomePage(props.genreId, props.sort)
       .then((results) => {
-        setResults(results);
         let newContentFormat = contentFormat(results);
 
         setListDataSource(newContentFormat);
@@ -136,10 +135,7 @@ export default function GigScreen() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const ref = React.useRef();
+  }, [props.genreId, props.sort]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
