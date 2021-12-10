@@ -53,7 +53,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 	}, [item.isExpanded]);
 
 	return (
-		<View>
+		<View key={item.id}>
 			<TouchableOpacity style={styles.item} onPress={onClickFunction}>
 				<Text style={styles.itemText}>{item.category_name}</Text>
 				<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
@@ -64,9 +64,9 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 					overflow: "hidden",
 				}}
 			>
-				{item.subcategory.map((item, key) => {
+				{item.subcategory.map((item) => {
 					return (
-						<TouchableOpacity key={key} style={styles.content}>
+						<TouchableOpacity key={item.val} style={styles.content}>
 							<Text style={styles.text}>{item.val}</Text>
 							<View style={styles.seperator} />
 						</TouchableOpacity>
@@ -84,7 +84,7 @@ export default function GigScreen() {
 
 	const contentFormat = (results) => {
 		return results.map((gig) => {
-			console.log(gig, "one gig <<<<<");
+
 			return {
 				isExpanded: false,
 				category_name: gig.name,
@@ -100,7 +100,6 @@ export default function GigScreen() {
 	};
 
 	const updateLayout = (index) => {
-		console.log(listDataSource, "OI you've been clicked");
 		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
 		const array = [...listDataSource];
 		if (multiSelect) {
@@ -122,9 +121,9 @@ export default function GigScreen() {
 			.then((results) => {
 				setResults(results);
 				let newContentFormat = contentFormat(results);
-				console.log(newContentFormat, "<<<<<<");
+		
 				setListDataSource(newContentFormat);
-				console.log(listDataSource, "after ApI response");
+				
 			})
 			.catch((error) => {
 				console.log(error);
@@ -141,15 +140,14 @@ export default function GigScreen() {
 					<Text style={styles.titleText}>Gig List</Text>
 					<TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
 						<Text style={styles.headerBtn}>
-							{multiSelect ? "Enable Multiple \n Expand" : "Enable Single \n Expand"}
+							{multiSelect ? "Multiple selector\n Enabled" : "Single selector\n Enabled"}
 						</Text>
 					</TouchableOpacity>
 				</View>
 				<ScrollView>
 					{listDataSource.map((item, key) => {
 						return (
-							<ExpandableComponent
-								key={item.category_name}
+							<ExpandableComponent key={item.category_name + key.toString()}
 								item={item}
 								onClickFunction={() => {
 									updateLayout(key);
