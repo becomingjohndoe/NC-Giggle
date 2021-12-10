@@ -55,70 +55,83 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
     }
   }, [item.isExpanded]);
 
-  return (
-    <View>
-      <TouchableOpacity style={styles.item} onPress={onClickFunction}>
-        <Text style={styles.itemText}>{item.category_name}</Text>
-        <Image
-          source={{ uri: item.image }}
-          style={{ width: 375, height: 200 }}
-        />
-      </TouchableOpacity>
-      <View
-        style={{
-          height: layoutHeight,
-          overflow: "hidden",
-        }}
-      >
-        {item.subcategory.map((item, key) => {
-          return (
-            <TouchableOpacity key={key} style={styles.content}>
-              <Text style={styles.text}>{item.val}</Text>
-              <View style={styles.seperator} />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </View>
-  );
+
+	return (
+		<View key={item.id}>
+			<TouchableOpacity style={styles.item} onPress={onClickFunction}>
+				<Text style={styles.itemText}>{item.category_name}</Text>
+				<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
+			</TouchableOpacity>
+			<View
+				style={{
+					height: layoutHeight,
+					overflow: "hidden",
+				}}
+			>
+				{item.subcategory.map((item) => {
+					return (
+						<TouchableOpacity key={item.val} style={styles.content}>
+							<Text style={styles.text}>{item.val}</Text>
+							<View style={styles.seperator} />
+						</TouchableOpacity>
+					);
+				})}
+			</View>
+		</View>
+	);
+
 };
 
 
 
-  const contentFormat = (results) => {
-    return results.map((gig) => {
-      // console.log(gig, "one gig <<<<<");
-      return {
-        isExpanded: false,
-        category_name: gig.name,
-        id: gig.id,
-        image: gig.images[4].url,
-        subcategory: [
-          { val: gig.dates.start.localDate },
-          { val: gig.dates.status.code },
-          { val: gig._embedded.venues[0].name },
-        ],
-      };
-    });
-  };
+	const contentFormat = (results) => {
+		return results.map((gig) => {
 
-  const updateLayout = (index) => {
-    console.log(listDataSource, "OI you've been clicked");
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    const array = [...listDataSource];
-    if (multiSelect) {
-      //If multiple select is enabled
-      array[index]["isExpanded"] = !array[index]["isExpanded"];
-    } else {
-      //If single select is enabled
-      array.map((value, placeindex) => {
-        return placeindex === index
-          ? (array[placeindex]["isExpanded"] = !array[placeindex]["isExpanded"])
-          : (array[placeindex]["isExpanded"] = false);
-      });
-    }
-    setListDataSource(array);
-  };
+			return {
+				isExpanded: false,
+				category_name: gig.name,
+				id: gig.id,
+				image: gig.images[4].url,
+				subcategory: [
+					{ val: gig.dates.start.localDate },
+					{ val: gig.dates.status.code },
+					{ val: gig._embedded.venues[0].name },
+				],
+			};
+		});
+	};
+
+	const updateLayout = (index) => {
+		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+		const array = [...listDataSource];
+		if (multiSelect) {
+			//If multiple select is enabled
+			array[index]["isExpanded"] = !array[index]["isExpanded"];
+		} else {
+			//If single select is enabled
+			array.map((value, placeindex) => {
+				return placeindex === index
+					? (array[placeindex]["isExpanded"] = !array[placeindex]["isExpanded"])
+					: (array[placeindex]["isExpanded"] = false);
+			});
+		}
+		setListDataSource(array);
+	};
+
+	useEffect(() => {
+		getGigsForHomepage()
+			.then((results) => {
+				setResults(results);
+				let newContentFormat = contentFormat(results);
+		
+				setListDataSource(newContentFormat);
+				
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	}, []);
+
 
   useEffect(() => {
     getGigsForHomepage()
@@ -134,38 +147,35 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
       });
   }, []);
 
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const ref = React.useRef();
 
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.titleText}>Gig List</Text>
-          <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
-            <Text style={styles.headerBtn}>
-              {multiSelect
-                ? "Enable Multiple \n Expand"
-                : "Enable Single \n Expand"}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <ScrollView>
-          {listDataSource.map((item, key) => {
-            return (
-              <ExpandableComponent
-                key={item.id}
-                item={item}
-                onClickFunction={() => {
-                  updateLayout(key);
-                }}
-              />
-            );
-          })}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
-  );
+	return (
+		<SafeAreaView style={{ flex: 1 }}>
+			<View style={styles.container}>
+				<View style={styles.header}>
+					<Text style={styles.titleText}>Gig List</Text>
+					<TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
+						<Text style={styles.headerBtn}>
+							{multiSelect ? "Multiple selector\n Enabled" : "Single selector\n Enabled"}
+						</Text>
+					</TouchableOpacity>
+				</View>
+				<ScrollView>
+					{listDataSource.map((item, key) => {
+						return (
+							<ExpandableComponent key={item.category_name + key.toString()}
+								item={item}
+								onClickFunction={() => {
+									updateLayout(key);
+								}}
+							/>
+						);
+					})}
+				</ScrollView>
+			</View>
+		</SafeAreaView>
+	);
+
+
 }
 
 const styles = StyleSheet.create({
