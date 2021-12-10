@@ -8,6 +8,8 @@ import {
 	setDoc,
 	updateDoc,
 	Timestamp,
+	exists,
+	getDoc
 } from "firebase/firestore";
 import { getAuth } from "@firebase/auth";
 const auth = getAuth();
@@ -34,8 +36,27 @@ async function saveMessage(messageText) {
 	}
 }
 
-export const createChatGroup = async (chatId) => {};
+export const createChatGroup = async (chatId) => {
+	const chatDocRef = doc(db, "chats", chatId);
+	const docSnap = await getDoc(chatDocRef)
+	if (!docSnap.exists()){
+	await setDoc(chatDocRef, {
+		messages: [],
+		users: []
+	}, {merge: true})
+}
+};
 
-export const addUserToChatGroup = async (chatId, userId) => {};
+export const addUserToChatGroup = async (chatId) => {
+	const chatDocRef = doc(db, "chats", chatId);
+	await updateDoc(chatDocRef, {
+		users: arrayUnion(auth.currentUser.uid)
+	})
+
+	const userDocRef = doc(db, "users", auth.currentUser.uid)
+	await updateDoc(userDocRef, {
+		chats: arrayUnion(chatId)
+	})
+};
 
 export default saveMessage;
