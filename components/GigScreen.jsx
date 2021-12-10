@@ -14,10 +14,7 @@ import {
 import { AppContext } from "../context/context";
 import { useState } from "react";
 import { getGigsForHomepage } from "../utils/api";
-import { ExpandableListView } from "react-native-expandable-listview";
 
-//Dummy content
-//
 const CONTENT = [
   {
     isExpanded: false,
@@ -57,7 +54,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
   }, [item.isExpanded]);
 
   return (
-    <View>
+    <View key={item.id}>
       <TouchableOpacity style={styles.item} onPress={onClickFunction}>
         <Text style={styles.itemText}>{item.category_name}</Text>
         <Image
@@ -71,9 +68,9 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
           overflow: "hidden",
         }}
       >
-        {item.subcategory.map((item, key) => {
+        {item.subcategory.map((item) => {
           return (
-            <TouchableOpacity key={key} style={styles.content}>
+            <TouchableOpacity key={item.val} style={styles.content}>
               <Text style={styles.text}>{item.val}</Text>
               <View style={styles.seperator} />
             </TouchableOpacity>
@@ -110,7 +107,6 @@ export default function GigScreen() {
   };
 
   const updateLayout = (index) => {
-    console.log(listDataSource, "OI you've been clicked");
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     const array = [...listDataSource];
     if (multiSelect) {
@@ -132,9 +128,8 @@ export default function GigScreen() {
       .then((results) => {
         setResults(results);
         let newContentFormat = contentFormat(results);
-        // console.log(newContentFormat, "<<<<<<");
+
         setListDataSource(newContentFormat);
-        // console.log(listDataSource, "after ApI response");
       })
       .catch((error) => {
         console.log(error);
@@ -152,8 +147,8 @@ export default function GigScreen() {
           <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
             <Text style={styles.headerBtn}>
               {multiSelect
-                ? "Enable Multiple \n Expand"
-                : "Enable Single \n Expand"}
+                ? "Multiple selector\n Enabled"
+                : "Single selector\n Enabled"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -161,7 +156,7 @@ export default function GigScreen() {
           {listDataSource.map((item, key) => {
             return (
               <ExpandableComponent
-                key={item.id}
+                key={item.category_name + key.toString()}
                 item={item}
                 onClickFunction={() => {
                   updateLayout(key);
