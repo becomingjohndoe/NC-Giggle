@@ -83,10 +83,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
   );
 };
 
-export default function GigScreen() {
-  const [results, setResults] = useState([]);
-  const [multiSelect, setMultiSelect] = useState(false);
-  const [listDataSource, setListDataSource] = useState(CONTENT);
+
 
   const contentFormat = (results) => {
     return results.map((gig) => {
