@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GigScreen from "./GigScreen";
 import Profile from "./Profile";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import UserProfile from "./UserProfile";
-import { filterGigs } from "../utils/api";
+import { getGigsForHomePage } from "../utils/api";
 import {
   View,
   Button,
@@ -20,6 +20,8 @@ const DrawerNavigation = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [genreValue, setGenreValue] = useState("KnvZfZ7vAvv");
   const [sortByValue, setSortByValue] = useState("date,asc");
+  const [gigs, setGigs] = useState([{}]);
+  const [filtered, setFiltered] = useState(false);
   const [genres, setGenres] = useState([
     { value: "KnvZfZ7vAvv", label: "Alternative" },
     { value: "KnvZfZ7vAve", label: "Ballads/Romantic" },
@@ -53,18 +55,23 @@ const DrawerNavigation = () => {
     { value: "venueName,desc", label: "Venue Name Descending" },
     { value: "random", label: "Random" },
   ]);
+
   const filter = () => {
-    filterGigs(genreValue, sortByValue).then((results) => {
-      console.log(results);
+    getGigsForHomePage(genreValue, sortByValue).then((results) => {
+      setGigs(results);
+      setFiltered(true);
     });
     setModalVisible(!modalVisible);
   };
+
   return (
     <>
       <Drawer.Navigator initialRouteName="Home">
         <Drawer.Screen
           name="Home"
-          component={GigScreen}
+          children={() => (
+            <GigScreen events={gigs} genreId={genreValue} sort={sortByValue} />
+          )}
           options={{
             headerTitle: "Gigs",
             headerRight: () => (
@@ -91,7 +98,13 @@ const DrawerNavigation = () => {
               onChange={(itemValue) => setGenreValue(itemValue.target.value)}
             >
               {genres.map((genre) => {
-                return <Picker.Item value={genre.value} label={genre.label} />;
+                return (
+                  <Picker.Item
+                    key={genre.value}
+                    value={genre.value}
+                    label={genre.label}
+                  />
+                );
               })}
             </Picker>
             <Text style={styles.text}>Sort By:</Text>
@@ -101,7 +114,11 @@ const DrawerNavigation = () => {
             >
               {sort.map((sortBy) => {
                 return (
-                  <Picker.Item value={sortBy.value} label={sortBy.label} />
+                  <Picker.Item
+                    key={sortBy.value}
+                    value={sortBy.value}
+                    label={sortBy.label}
+                  />
                 );
               })}
             </Picker>
