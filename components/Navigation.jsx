@@ -3,7 +3,7 @@ import GigScreen from "./GigScreen";
 import Profile from "./Profile";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import UserProfile from "./UserProfile";
-import { Button } from "react-native";
+
 import Chats from "./Chats";
 import {
 	View,
