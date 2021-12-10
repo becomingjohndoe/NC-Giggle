@@ -3,6 +3,7 @@ import GigScreen from "./GigScreen";
 import Profile from "./Profile";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import UserProfile from "./UserProfile";
+import { filterGigs } from "../utils/api";
 import {
   View,
   Button,
@@ -17,9 +18,8 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [genreDropDownOpen, setGenreDropDownOpen] = useState(false);
   const [genreValue, setGenreValue] = useState("KnvZfZ7vAvv");
-  const [sortByValue, setSortByValue] = useState("name.asc");
+  const [sortByValue, setSortByValue] = useState("date,asc");
   const [genres, setGenres] = useState([
     { value: "KnvZfZ7vAvv", label: "Alternative" },
     { value: "KnvZfZ7vAve", label: "Ballads/Romantic" },
@@ -31,7 +31,6 @@ const DrawerNavigation = () => {
     { value: "KnvZfZ7vAvF", label: "Dance/Electronic" },
     { value: "KnvZfZ7vAva", label: "Folk" },
     { value: "KnvZfZ7vAv1", label: "Hip-Hop/Rap" },
-    { value: "KnvZfZ7vAvJ", label: "Holvalueay" },
     { value: "KnvZfZ7vAvE", label: "Jazz" },
     { value: "KnvZfZ7vAJ6", label: "Latin" },
     { value: "KnvZfZ7vAvI", label: "Medieval/Renaissance" },
@@ -46,20 +45,20 @@ const DrawerNavigation = () => {
     { value: "KnvZfZ7vAeF", label: "World" },
   ]);
   const [sort, setSort] = useState([
-    { value: "name.asc", label: "Name Ascending" },
-    { value: "name.desc", label: "Name Descending" },
-    { value: "date.asc", label: "Date Ascending" },
-    { value: "date.desc", label: "Date Descending" },
-    { value: "venueName.asc", label: "Venue Name Ascending" },
-    { value: "venueName.desc", label: "Venue Name Descending" },
+    { value: "date,asc", label: "Date Ascending" },
+    { value: "date,desc", label: "Date Descending" },
+    { value: "name,asc", label: "Name Ascending" },
+    { value: "name,desc", label: "Name Descending" },
+    { value: "venueName,asc", label: "Venue Name Ascending" },
+    { value: "venueName,desc", label: "Venue Name Descending" },
     { value: "random", label: "Random" },
   ]);
-  const setGenresOpen = () => {
-    setGenreDropDownOpen((prevGenreDropDownOpen) => {
-      return !prevGenreDropDownOpen;
+  const filter = () => {
+    filterGigs(genreValue, sortByValue).then((results) => {
+      console.log(results);
     });
+    setModalVisible(!modalVisible);
   };
-
   return (
     <>
       <Drawer.Navigator initialRouteName="Home">
@@ -89,7 +88,7 @@ const DrawerNavigation = () => {
             <Text style={styles.text}>Select a genre:</Text>
             <Picker
               selectedValue={genreValue}
-              onChange={(itemValue) => setGenreValue(itemValue)}
+              onChange={(itemValue) => setGenreValue(itemValue.target.value)}
             >
               {genres.map((genre) => {
                 return <Picker.Item value={genre.value} label={genre.label} />;
@@ -98,7 +97,7 @@ const DrawerNavigation = () => {
             <Text style={styles.text}>Sort By:</Text>
             <Picker
               selectedValue={sortByValue}
-              onChange={(itemValue) => setSortByValue(itemValue)}
+              onChange={(itemValue) => setSortByValue(itemValue.target.value)}
             >
               {sort.map((sortBy) => {
                 return (
@@ -106,14 +105,9 @@ const DrawerNavigation = () => {
                 );
               })}
             </Picker>
-            <Pressable>
-              <Text>Filter</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.button]}
-              onPress={() => setModalVisible(!modalVisible)}
-            >
-              <Text>Hide Modal</Text>
+
+            <Pressable style={[styles.button]} onPress={filter}>
+              <Text>Apply</Text>
             </Pressable>
           </View>
         </Modal>
