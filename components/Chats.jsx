@@ -43,7 +43,12 @@ export default function Chats() {
 		<SafeAreaView>
 			<ScrollView>
 				{messages.map((message, key) => {
-					return <Text key={message + key.toString()}>{message.message}</Text>;
+					return (
+						<Text
+							style={{ float: "right" }}
+							key={message + key.toString()}
+						>{`${message.message} ${message.timestamp}`}</Text>
+					);
 				})}
 			</ScrollView>
 			<TextInput
