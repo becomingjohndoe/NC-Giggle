@@ -9,9 +9,11 @@ import {
   TouchableOpacity,
   LayoutAnimation,
   Platform,
+  Button,
 } from "react-native";
 import { useState } from "react";
-import { getGigsForHomePage } from "../utils/api";
+import { getGigsForHomepage } from "../utils/api";
+import { addUserToChatGroup, createChatGroup } from "../firebase-sw-messaging";
 
 const CONTENT = [
   {
@@ -66,26 +68,32 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
           overflow: "hidden",
         }}
       >
-        {item.subcategory.map((item) => {
+        {item.subcategory.map((value) => {
           return (
-            <TouchableOpacity key={item.val} style={styles.content}>
-              <Text style={styles.text}>{item.val}</Text>
+            <TouchableOpacity key={value.val} style={styles.content}>
+              <Text style={styles.text}>{value.val}</Text>
               <View style={styles.seperator} />
             </TouchableOpacity>
           );
         })}
+        <Button title="I'm interested"
+          onPress={() => {
+            createChatGroup(item.id).then(()=>{addUserToChatGroup(item.id)})
+          }}
+        />
+
       </View>
     </View>
   );
 };
 
 export default function GigScreen(props) {
+
   const [multiSelect, setMultiSelect] = useState(false);
   const [listDataSource, setListDataSource] = useState(CONTENT);
 
   const contentFormat = (results) => {
     return results.map((gig) => {
-      // console.log(gig, "one gig <<<<<");
       return {
         isExpanded: false,
         category_name: gig.name,
@@ -99,7 +107,6 @@ export default function GigScreen(props) {
       };
     });
   };
-  // console.log(contentFormat);
 
   const updateLayout = (index) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
