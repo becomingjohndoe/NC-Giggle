@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,9 +10,8 @@ import {
   LayoutAnimation,
   Platform,
 } from "react-native";
-import { AppContext } from "../context/context";
 import { useState } from "react";
-import { getGigsForHomepage } from "../utils/api";
+import { getGigsForHomePage } from "../utils/api";
 
 const CONTENT = [
   {
@@ -81,15 +79,11 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
   );
 };
 
-export default function GigScreen() {
-  const [results, setResults] = useState([]);
+export default function GigScreen(props) {
   const [multiSelect, setMultiSelect] = useState(false);
   const [listDataSource, setListDataSource] = useState(CONTENT);
-  const { currentGigs, setCurrentGigs } = useContext(AppContext);
 
   const contentFormat = (results) => {
-    setCurrentGigs(results);
-    console.log(currentGigs);
     return results.map((gig) => {
       // console.log(gig, "one gig <<<<<");
       return {
@@ -105,6 +99,7 @@ export default function GigScreen() {
       };
     });
   };
+  // console.log(contentFormat);
 
   const updateLayout = (index) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -124,9 +119,8 @@ export default function GigScreen() {
   };
 
   useEffect(() => {
-    getGigsForHomepage()
+    getGigsForHomePage(props.genreId, props.sort)
       .then((results) => {
-        setResults(results);
         let newContentFormat = contentFormat(results);
 
         setListDataSource(newContentFormat);
@@ -134,10 +128,7 @@ export default function GigScreen() {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  const [currentIndex, setCurrentIndex] = useState(null);
-  const ref = React.useRef();
+  }, [props.genreId, props.sort]);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
