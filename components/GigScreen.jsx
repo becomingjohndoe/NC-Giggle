@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
 		padding: 20,
 	},
 	itemText: {
-		fontSize: 15,
+		fontSize: 16,
 		fontWeight: "500",
 	},
 	content: {
