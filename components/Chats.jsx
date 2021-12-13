@@ -6,8 +6,10 @@ import {
 	Text,
 	ScrollView,
 	StatusBar,
+	StyleSheet
 } from "react-native";
 import saveMessage from "../firebase-sw-messaging";
+import { getAuth } from "firebase/auth";
 import {
 	query,
 	docChanges,
@@ -22,6 +24,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Chats() {
+	const auth = getAuth();
 	const [message, setMessage] = React.useState("");
 	const [messages, setMessages] = React.useState([]);
 	useEffect(() => {
@@ -35,7 +38,6 @@ export default function Chats() {
 		const recentMessagesQuery = query(chats);
 		// Start listening to the query.
 		onSnapshot(recentMessagesQuery, function (snapshot) {
-			console.log(snapshot.data().messages);
 			setMessages(() => [...snapshot.data().messages]);
 		});
 	}, []);
@@ -44,8 +46,7 @@ export default function Chats() {
 			<ScrollView>
 				{messages.map((message, key) => {
 					return (
-						<Text
-							style={{ float: "right" }}
+						<Text style={auth.currentUser.uid === message.user ? styles.fromMe : styles.fromThem }
 							key={message + key.toString()}
 						>{`${message.message} ${message.timestamp}`}</Text>
 					);
@@ -72,3 +73,22 @@ export default function Chats() {
 		</SafeAreaView>
 	);
 }
+
+const styles = StyleSheet.create({
+fromMe: {
+	alignSelf: "flex-end",
+	margin: 10,
+padding: 10,
+borderRadius: 10,
+backgroundColor: "#00BCD4",
+color: "white", 
+},
+fromThem: {
+	alignSelf: "flex-start",
+	margin: 10,
+padding: 10,
+borderRadius: 10,
+backgroundColor: "blue",
+color: "white", 
+}
+})

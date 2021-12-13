@@ -15,6 +15,7 @@ import {
 	Picker,
 } from "react-native";
 import { checkForUpdateAsync } from "expo-updates";
+import ChatsList from "./ChatsList";
 
 const Drawer = createDrawerNavigator();
 
@@ -91,6 +92,7 @@ const DrawerNavigation = () => {
 				/>
 				<Drawer.Screen name="Profile" component={UserProfile} />
 				<Drawer.Screen name="Chats" component={Chats} />
+				<Drawer.Screen name="ChatsList" component={ChatsList} />
 			</Drawer.Navigator>
 			<View>
 				<Modal visible={modalVisible} animationType="slide">
