@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import GigScreen from "./GigScreen";
 import Profile from "./Profile";
 import Chats from "./Chats";
@@ -14,14 +14,19 @@ import {
 	Pressable,
 	Picker,
 } from "react-native";
-import { checkForUpdateAsync } from "expo-updates";
+
+import { UserContext } from "../context/context";
 
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = () => {
+	const {userParams} = useContext(UserContext);
+	console.log(userParams.city, "Params")
 	const [modalVisible, setModalVisible] = useState(false);
-	const [genreValue, setGenreValue] = useState("KnvZfZ7vAvv");
+	const [genreValue, setGenreValue] = useState(userParams.genre);
 	const [sortByValue, setSortByValue] = useState("date,asc");
+	const [userCity, setUserCity] = useState(userParams.city);
+	console.log(userParams.city, '<=============')
 	const [gigs, setGigs] = useState([{}]);
 	const [filtered, setFiltered] = useState(false);
 	const [genres, setGenres] = useState([
@@ -59,7 +64,7 @@ const DrawerNavigation = () => {
 	]);
 
 	const filter = () => {
-		getGigsForHomePage(genreValue, sortByValue).then((results) => {
+		getGigsForHomePage(genreValue, sortByValue, userCity).then((results) => {
 			setGigs(results);
 			setFiltered(true);
 		});
@@ -72,7 +77,7 @@ const DrawerNavigation = () => {
 				<Drawer.Screen
 					name="Home"
 					children={() => (
-						<GigScreen events={gigs} genreId={genreValue} sort={sortByValue} />
+						<GigScreen events={gigs} genreId={genreValue} sort={sortByValue} city={userCity}/>
 					)}
 					options={{
 						headerTitle: "Gigs",
