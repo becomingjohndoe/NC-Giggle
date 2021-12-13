@@ -126,7 +126,7 @@ export default function GigScreen(props) {
 	};
 
 	useEffect(() => {
-		getGigsForHomePage(props.genreId, props.sort)
+		getGigsForHomePage(props.genreId, props.sort, props.city)
 			.then((results) => {
 				let newContentFormat = contentFormat(results);
 
@@ -135,7 +135,7 @@ export default function GigScreen(props) {
 			.catch((error) => {
 				console.log(error);
 			});
-	}, [props.genreId, props.sort]);
+	}, [props.genreId, props.sort, props.city]);
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>

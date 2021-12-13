@@ -10,6 +10,7 @@ import Profile from "./components/Profile";
 import Chats from "./components/Chats";
 
 import DrawerNavigation from "./components/Navigation";
+import { UserProvider } from "./context/context";
 
 export default function App() {
   const [user, setUser] = React.useState(null);
@@ -25,21 +26,21 @@ export default function App() {
     setIsLoading(true);
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        console.log("user is logged in");
         setUser(user);
         checkNewuser().then((u) => {
           setIsNewUser(u);
         });
       } else {
-        console.log("user is not logged in");
         setUser(null);
       }
       setIsLoading(false);
     });
   }, []);
+
   if (isLoading) return <Text>Loading...</Text>;
   return (
     <>
+    <UserProvider>
       <NavigationContainer>
         <Stack.Navigator>
           {user ? (
@@ -72,6 +73,7 @@ export default function App() {
           )}
         </Stack.Navigator>
       </NavigationContainer>
+      </UserProvider>
     </>
   );
 }

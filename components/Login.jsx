@@ -1,13 +1,31 @@
 import { View, TextInput, Button, StyleSheet, Text } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import {
   signInWithGoogle,
   signIn,
   getGoogleUser,
   signOutUser,
+  getUserInfo
 } from "../firebase";
+import { UserContext } from "../context/context";
+
+
 
 export default function Login({ navigation }) {
+  
+  const { setUserParams, userParams } = useContext(UserContext)
+
+    const getUser = () => {
+    getUserInfo().then((userInfo)=>{
+    setUserParams(()=>{
+      return {
+        city: userInfo._document.data.value.mapValue.fields.city.stringValue,
+        genre: userInfo._document.data.value.mapValue.fields.genrePreferences.arrayValue.values[0].stringValue
+      }
+    })
+    })
+  }
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   return (
@@ -26,7 +44,9 @@ export default function Login({ navigation }) {
         title="Login"
         color="blue"
         onPress={() => {
-          signIn(email, password);
+          signIn(email, password).then((currentUser)=>{
+            getUser();
+          });
         }}
       />
       <Button
@@ -39,7 +59,7 @@ export default function Login({ navigation }) {
       <Button
         title="Sign Up"
         onPress={() => {
-          navigation.navigate("Sign Up");
+          navigation.navigate("Sign Up")
         }}
       />
     </View>
