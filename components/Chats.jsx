@@ -23,16 +23,17 @@ import {
 } from "firebase/firestore";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function Chats() {
+export default function Chats(props) {
 	const auth = getAuth();
 	const [message, setMessage] = React.useState("");
 	const [messages, setMessages] = React.useState([]);
+
 	useEffect(() => {
 		// Loads chat messages history and listens for upcoming ones.
 
 		// Create the query to load the last 12 messages and listen for new ones.
 		const chatRef = collection(getFirestore(), "chats");
-		const chats = doc(getFirestore(), "chats", "1");
+		const chats = doc(getFirestore(), "chats", props.route.params.id);
 		getDoc(chats).then((result) => {});
 
 		const recentMessagesQuery = query(chats);
@@ -40,7 +41,7 @@ export default function Chats() {
 		onSnapshot(recentMessagesQuery, function (snapshot) {
 			setMessages(() => [...snapshot.data().messages]);
 		});
-	}, []);
+	}, [props.route.params.id]);
 	return (
 		<SafeAreaView>
 			<ScrollView>
@@ -61,7 +62,7 @@ export default function Chats() {
 			<Button
 				title="Send"
 				onPress={() => {
-					saveMessage(message);
+					saveMessage(message, props.route.params.id);
 				}}
 			/>
 			<StatusBar
