@@ -7,6 +7,7 @@ import SignUp from "./components/SignUp";
 import { onAuthStateChanged, getAuth } from "@firebase/auth";
 import { checkNewuser } from "./firebase";
 import Profile from "./components/Profile";
+import Chats from "./components/Chats";
 
 import DrawerNavigation from "./components/Navigation";
 import { UserProvider } from "./context/context";
@@ -18,6 +19,7 @@ export default function App() {
 
   const auth = getAuth();
   const Stack = createNativeStackNavigator();
+  const HomeStack = createNativeStackNavigator();
 
   // check if user is loggen into firebase
   useEffect(() => {
@@ -53,13 +55,14 @@ export default function App() {
                   />
                 </>
               ) : (
-                <Stack.Group>
+                <>
                   <Stack.Screen
                     name="navigator"
                     component={DrawerNavigation}
                     options={{ headerShown: false }}
                   />
-                </Stack.Group>
+                  <Stack.Screen name="Chats" component={Chats}></Stack.Screen>
+                </>
               )}
             </>
           ) : (

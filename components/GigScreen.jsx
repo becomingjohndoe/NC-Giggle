@@ -77,7 +77,8 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 				<Button
 					title="I'm interested"
 					onPress={() => {
-						createChatGroup(item.id).then(() => {
+						console.log(item);
+						createChatGroup(item.id, item.category_name, item.subcategory[0].val, item.subcategory[2].val).then(() => {
 							addUserToChatGroup(item.id);
 						});
 					}}
