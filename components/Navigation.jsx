@@ -91,7 +91,7 @@ const DrawerNavigation = () => {
 					}}
 				/>
 				<Drawer.Screen name="Profile" component={UserProfile} />
-				<Drawer.Screen name="Chats" component={Chats} />
+				{/* <Drawer.Screen name="Chatroom" component={Chats} /> */}
 				<Drawer.Screen name="ChatsList" component={ChatsList} />
 			</Drawer.Navigator>
 			<View>
