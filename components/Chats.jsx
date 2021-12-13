@@ -6,7 +6,7 @@ import {
 	Text,
 	ScrollView,
 	StatusBar,
-	StyleSheet
+	StyleSheet,
 } from "react-native";
 import saveMessage from "../firebase-sw-messaging";
 import { getAuth } from "firebase/auth";
@@ -43,11 +43,14 @@ export default function Chats(props) {
 		});
 	}, [props.route.params.id]);
 	return (
-		<SafeAreaView>
+		<SafeAreaView style={styles.container}>
 			<ScrollView>
 				{messages.map((message, key) => {
 					return (
-						<Text style={auth.currentUser.uid === message.user ? styles.fromMe : styles.fromThem }
+						<Text
+							style={
+								auth.currentUser.uid === message.user ? styles.fromMe : styles.fromThem
+							}
 							key={message + key.toString()}
 						>{`${message.message} ${message.timestamp}`}</Text>
 					);
@@ -65,6 +68,7 @@ export default function Chats(props) {
 					saveMessage(message, props.route.params.id);
 				}}
 			/>
+
 			<StatusBar
 				barStyle="dark-content"
 				hidden={false}
@@ -76,20 +80,23 @@ export default function Chats(props) {
 }
 
 const styles = StyleSheet.create({
-fromMe: {
-	alignSelf: "flex-end",
-	margin: 10,
-padding: 10,
-borderRadius: 10,
-backgroundColor: "#00BCD4",
-color: "white", 
-},
-fromThem: {
-	alignSelf: "flex-start",
-	margin: 10,
-padding: 10,
-borderRadius: 10,
-backgroundColor: "blue",
-color: "white", 
-}
-})
+	fromMe: {
+		alignSelf: "flex-end",
+		margin: 10,
+		padding: 10,
+		borderRadius: 10,
+		backgroundColor: "#00BCD4",
+		color: "white",
+	},
+	fromThem: {
+		alignSelf: "flex-start",
+		margin: 10,
+		padding: 10,
+		borderRadius: 10,
+		backgroundColor: "blue",
+		color: "white",
+	},
+	container: {
+		flex: 1,
+	},
+});
