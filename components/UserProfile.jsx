@@ -52,6 +52,7 @@ const UserProfile = () => {
       ></Image>
       <Text>Name: {userInfo.displayName} </Text>
       <Text>Email: {userInfo.email} </Text>
+      {userInfo.city ? <Text>City: {userInfo.city} </Text> : <Text>Set your City!</Text>}
       { pickedGenres ?
       <View>
         <Text>Genres I'm interested in:</Text>
@@ -59,7 +60,7 @@ const UserProfile = () => {
        return <Text key={genres[choice]}> {genres[choice]}</Text>
 }
 )}</View> : <Text>Choose some Genres!</Text>}
-      <Text> Bio: {userInfo.bio} </Text>
+      {userInfo.bio ? <Text> Bio: {userInfo.bio} </Text> : <Text>Make your Bio!</Text>}
       <Button title="sign out" onPress={signOutUser} />
     </View>
   );
