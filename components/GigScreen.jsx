@@ -77,8 +77,15 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 				<Button
 					title="I'm interested"
 					onPress={() => {
-						console.log(item);
-						createChatGroup(item.id, item.category_name, item.subcategory[0].val, item.subcategory[2].val).then(() => {
+						console.log(item.image);
+						createChatGroup(
+							item.id,
+							item.category_name,
+							item.subcategory[0].val,
+							item.subcategory[2].val,
+							item.image,
+							item
+						).then(() => {
 							addUserToChatGroup(item.id);
 						});
 					}}
@@ -181,20 +188,17 @@ const styles = StyleSheet.create({
 	},
 	titleText: {
 		flex: 1,
-		fontsize: 22,
 		fontWeight: "bold",
 	},
 	headerBtn: {
 		textAlign: "center",
 		justifyContent: "center",
-		fontsize: 18,
 	},
 	item: {
 		backgroundColor: "orange",
 		padding: 20,
 	},
 	itemText: {
-		fontSize: 16,
 		fontWeight: "500",
 	},
 	content: {
@@ -203,7 +207,6 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 	},
 	text: {
-		fontsize: 16,
 		padding: 10,
 	},
 	seperator: {
@@ -220,11 +223,9 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	gigInfo: {
-		fontSize: 20,
 		fontWeight: "700",
 	},
 	gigInfoBody: {
-		fontSize: 15,
 		lineHeight: 15 * 1.5,
 		textAlign: "center",
 		marginTop: 20,
