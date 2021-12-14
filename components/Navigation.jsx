@@ -77,6 +77,7 @@ const DrawerNavigation = ({ navigation, route }) => {
 		setModalVisible(!modalVisible);
 	};
 	useEffect(() => {
+		console.log("useEffect");
 		getUserInfo().then((user) => {
 			if (user) {
 				console.log(user);
@@ -84,13 +85,15 @@ const DrawerNavigation = ({ navigation, route }) => {
 				setInitialCity(user.city);
 				setInitialGenre(user.genrePrefrences[0]);
 			}
+			getGigsForHomePage(initialGenre, sortByValue, initialCity).then(
+				(results) => {
+					setGigs(results);
+				}
+			);
 		});
+		setIsLoading(false);
 		// console.log("here", userParams);
-		getGigsForHomePage(initialGenre, sortByValue, initialCity).then((results) => {
-			setGigs(results);
-			setIsLoading(false);
-		});
-	}, [userParams, initialCity]);
+	}, [initialCity]);
 	if (isLoading) {
 		return <Text>Loading</Text>;
 	}
