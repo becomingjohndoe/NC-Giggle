@@ -5,40 +5,39 @@ import { getAuth } from "firebase/auth";
 
 const UserProfile = () => {
   const [userInfo, setUserInfo] = useState({});
-  const genres = [
+  const [pickedGenres, setPickedGenres] = useState(false);
+  const genres =
     {
-      KnvZfZ7vAvv: "Alternative",
-      KnvZfZ7vAve: "Ballads/Romantic",
-      KnvZfZ7vAvd: "Blues",
-    },
-  ];
-
-  //   { id: "KnvZfZ7vAvA", name: "Chanson Francais" },
-  //   { id: "KnvZfZ7vAvk", name: "Children's Music" },
-  //   { id: "KnvZfZ7vAeJ", name: "Classical" },
-  //   { id: "KnvZfZ7vAv6", name: "Country" },
-  //   { id: "KnvZfZ7vAvF", name: "Dance/Electronic" },
-  //   { id: "KnvZfZ7vAva", name: "Folk" },
-  //   { id: "KnvZfZ7vAv1", name: "Hip-Hop/Rap" },
-  //   { id: "KnvZfZ7vAvJ", name: "Holiday" },
-  //   { id: "KnvZfZ7vAvE", name: "Jazz" },
-  //   { id: "KnvZfZ7vAJ6", name: "Latin" },
-  //   { id: "KnvZfZ7vAvI", name: "Medieval/Renaissance" },
-  //   { id: "KnvZfZ7vAvt", name: "Metal" },
-  //   { id: "KnvZfZ7vAvn", name: "New Age" },
-  //   { id: "KnvZfZ7vAvl", name: "Other" },
-  //   { id: "KnvZfZ7vAev", name: "Pop" },
-  //   { id: "KnvZfZ7vAee", name: "R&B" },
-  //   { id: "KnvZfZ7vAed", name: "Reggae" },
-  //   { id: "KnvZfZ7vAe7", name: "Religious" },
-  //   { id: "KnvZfZ7vAeA", name: "Rock" },
-  //   { id: "KnvZfZ7vAeF", name: "World" },
-  // ];
+    KnvZfZ7vAvv: "Alternative",
+    KnvZfZ7vAve: "Ballads/Romantic",
+    KnvZfZ7vAvd: "Blues",
+    KnvZfZ7vAvA: "Chanson Francais",
+    KnvZfZ7vAvk: "Children's Music",
+    KnvZfZ7vAeJ: "Classical",
+    KnvZfZ7vAv6: "Country",
+    KnvZfZ7vAvF: "Dance/Electronic",
+    KnvZfZ7vAva: "Folk",
+    KnvZfZ7vAv1: "Hip-Hop/Rap",
+    KnvZfZ7vAvJ: "Holiday",
+    KnvZfZ7vAvE: "Jazz",
+    KnvZfZ7vAJ6: "Latin",
+    KnvZfZ7vAvI: "Medieval/Renaissance",
+    KnvZfZ7vAvt: "Metal",
+    KnvZfZ7vAvn: "New Age",
+    KnvZfZ7vAvl: "Other",
+    KnvZfZ7vAev: "Pop",
+    KnvZfZ7vAee: "R&B",
+    KnvZfZ7vAed: "Reggae",
+    KnvZfZ7vAe7: "Religious",
+    KnvZfZ7vAeA: "Rock",
+    KnvZfZ7vAeF: "World",
+    };
 
   useEffect(() => {
     getUserInfo().then((res) => {
       const info = res.data();
       setUserInfo(info);
+      setPickedGenres(info.genrePreferences);
     });
   }, []);
 
@@ -48,12 +47,18 @@ const UserProfile = () => {
   return (
     <View style={styles.container}>
       <Image
-        source={{ uri: userInfo.photoURL }}
+        source={{ uri: userInfo.profile_picture }}
         style={{ width: 100, height: 100 }}
       ></Image>
       <Text>Name: {userInfo.displayName} </Text>
       <Text>Email: {userInfo.email} </Text>
-      <Text> {genres[userInfo.genrePreferences[0]]} </Text>
+      { pickedGenres ?
+      <View>
+        <Text>Genres I'm interested in:</Text>
+      {pickedGenres.map((choice) => {
+       return <Text key={genres[choice]}> {genres[choice]}</Text>
+}
+)}</View> : <Text>Choose some Genres!</Text>}
       <Text> Bio: {userInfo.bio} </Text>
       <Button title="sign out" onPress={signOutUser} />
     </View>
