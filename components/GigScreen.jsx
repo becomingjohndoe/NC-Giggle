@@ -10,6 +10,7 @@ import {
 	LayoutAnimation,
 	Platform,
 	Button,
+	Linking
 } from "react-native";
 import { useState } from "react";
 import { getGigsForHomePage } from "../utils/api";
@@ -58,7 +59,10 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 		<View key={item.id}>
 			<TouchableOpacity style={styles.item} onPress={onClickFunction}>
 				<Text style={styles.itemText}>{item.category_name}</Text>
-				<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
+				<Text style={{color: 'blue'}}
+      				onPress={() => Linking.openURL(item.image)}>
+					<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
+				</Text>					
 			</TouchableOpacity>
 			<View
 				style={{
