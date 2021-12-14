@@ -27,49 +27,47 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
     }
   }, [item.isExpanded]);
 
-  return (
-    <View key={item.id}>
-      <TouchableOpacity style={styles.item} onPress={onClickFunction}>
-        <Text style={styles.itemText}>{item.category_name}</Text>
-        <Image
-          source={{ uri: item.image }}
-          style={{ width: 375, height: 200 }}
-        />
-      </TouchableOpacity>
-      <View
-        style={{
-          height: layoutHeight,
-          overflow: "hidden",
-        }}
-      >
-        {item.subcategory.map((value, key) => {
-          return (
-            <TouchableOpacity
-              key={value.val + key.toString()}
-              style={styles.content}
-            >
-              <Text style={styles.text}>{value.val}</Text>
-              <View style={styles.seperator} />
-            </TouchableOpacity>
-          );
-        })}
-        <Button
-          title="I'm interested"
-          onPress={() => {
-            console.log(item);
-            createChatGroup(
-              item.id,
-              item.category_name,
-              item.subcategory[0].val,
-              item.subcategory[2].val
-            ).then(() => {
-              addUserToChatGroup(item.id);
-            });
-          }}
-        />
-      </View>
-    </View>
-  );
+
+	return (
+		<View key={item.id}>
+			<TouchableOpacity style={styles.item} onPress={onClickFunction}>
+				<Text style={styles.itemText}>{item.category_name}</Text>
+				<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
+			</TouchableOpacity>
+			<View
+				style={{
+					height: layoutHeight,
+					overflow: "hidden",
+				}}
+			>
+				{item.subcategory.map((value) => {
+					return (
+						<TouchableOpacity key={value.val} style={styles.content}>
+							<Text style={styles.text}>{value.val}</Text>
+							<View style={styles.seperator} />
+						</TouchableOpacity>
+					);
+				})}
+				<Button
+					title="I'm interested"
+					onPress={() => {
+						console.log(item.image);
+						createChatGroup(
+							item.id,
+							item.category_name,
+							item.subcategory[0].val,
+							item.subcategory[2].val,
+							item.image,
+							item
+						).then(() => {
+							addUserToChatGroup(item.id);
+						});
+					}}
+				/>
+			</View>
+		</View>
+	);
+
 };
 
 export default function GigScreen(props) {
@@ -164,64 +162,59 @@ export default function GigScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    flexDirection: "row",
-    padding: 10,
-  },
-  titleText: {
-    flex: 1,
-    fontsize: 22,
-    fontWeight: "bold",
-  },
-  headerBtn: {
-    textAlign: "center",
-    justifyContent: "center",
-    fontsize: 18,
-  },
-  item: {
-    backgroundColor: "orange",
-    padding: 20,
-  },
-  itemText: {
-    fontSize: 16,
-    fontWeight: "500",
-  },
-  content: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: "#fff",
-  },
-  text: {
-    fontsize: 16,
-    padding: 10,
-  },
-  seperator: {
-    height: 0.5,
-    backgroundColor: "#c8c8c8",
-    width: "100%",
-  },
-  gigContainer: {
-    flexGrow: 0,
-  },
-  gigCard: {
-    flexGrow: 0,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  gigInfo: {
-    fontSize: 20,
-    fontWeight: "700",
-  },
-  gigInfoBody: {
-    fontSize: 15,
-    lineHeight: 15 * 1.5,
-    textAlign: "center",
-    marginTop: 20,
-  },
+
+	container: {
+		flex: 1,
+		backgroundColor: "#fff",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	header: {
+		flexDirection: "row",
+		padding: 10,
+	},
+	titleText: {
+		flex: 1,
+		fontWeight: "bold",
+	},
+	headerBtn: {
+		textAlign: "center",
+		justifyContent: "center",
+	},
+	item: {
+		backgroundColor: "orange",
+		padding: 20,
+	},
+	itemText: {
+		fontWeight: "500",
+	},
+	content: {
+		paddingLeft: 10,
+		paddingRight: 10,
+		backgroundColor: "#fff",
+	},
+	text: {
+		padding: 10,
+	},
+	seperator: {
+		height: 0.5,
+		backgroundColor: "#c8c8c8",
+		width: "100%",
+	},
+	gigContainer: {
+		flexGrow: 0,
+	},
+	gigCard: {
+		flexGrow: 0,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	gigInfo: {
+		fontWeight: "700",
+	},
+	gigInfoBody: {
+		lineHeight: 15 * 1.5,
+		textAlign: "center",
+		marginTop: 20,
+	},
 });
