@@ -40,39 +40,39 @@ export default function App() {
   if (isLoading) return <Text>Loading...</Text>;
   return (
     <>
-    <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {user ? (
-            <>
-              {isNewUser ? (
-                <>
-                  <Stack.Screen
-                    name="Profile"
-                    component={Profile}
-                    options={{ headerShown: false }}
-                    initialParams={{ newUser: setIsNewUser }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Stack.Screen
-                    name="navigator"
-                    component={DrawerNavigation}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen name="Chats" component={Chats}></Stack.Screen>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Sign Up" component={SignUp} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+      <UserProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {user ? (
+              <>
+                {isNewUser ? (
+                  <>
+                    <Stack.Screen
+                      name="Profile"
+                      component={Profile}
+                      options={{ headerShown: false }}
+                      initialParams={{ newUser: setIsNewUser }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Stack.Screen
+                      name="navigator"
+                      component={DrawerNavigation}
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen name="Chats" component={Chats}></Stack.Screen>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <Stack.Screen name="Login" component={Login} />
+                <Stack.Screen name="Sign Up" component={SignUp} />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
       </UserProvider>
     </>
   );
