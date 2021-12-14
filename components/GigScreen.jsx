@@ -28,7 +28,7 @@ function AppBtn({ onPress, title, clickedBtn, btnId, setClickedBtn }){
 	}, []);
 	return (
 	<TouchableOpacity onPress={onPress} style={clickedBtn ? styles.clickedAppBtnContainer: styles.appButtonContainer }>
-	  <Text style={styles.appButtonText}>{title}</Text>
+	  <Text style={styles.appButtonText}>{clickedBtn ? "Interested" : title}</Text>
 	</TouchableOpacity>
 )};
 
