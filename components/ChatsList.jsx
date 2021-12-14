@@ -24,6 +24,7 @@ export default function ChatsList({ navigation }) {
 
 	return (
 		<View style={styles.container}>
+			{ chats.length === 0 ? <Text> Start signing up for chatrooms!</Text> :
 			<ScrollView>
 				{chats.map((chatroom) => {
 					console.log(chatroom);
@@ -53,7 +54,7 @@ export default function ChatsList({ navigation }) {
 						</View>
 					);
 				})}
-			</ScrollView>
+			</ScrollView>}
 			<StatusBar
 				barStyle="dark-content"
 				hidden={false}
