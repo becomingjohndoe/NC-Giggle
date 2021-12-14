@@ -93,7 +93,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 				})}
 				<AppBtn clickedBtn={clickedBtn} setClickedBtn={setClickedBtn} btnId={item.id+"btn"}
 			 		key={item.id+"btn"}
-					title="I'm interested"
+					title="sign up to gig chatroom"
 					onPress={() => {
 						setClickedBtn(true);
 						createChatGroup(
