@@ -14,7 +14,23 @@ import {
 import { useState } from "react";
 import { getGigsForHomePage } from "../utils/api";
 
-import { addUserToChatGroup, createChatGroup } from "../firebase-sw-messaging";
+import { addUserToChatGroup, createChatGroup, getChatsForUser } from "../firebase-sw-messaging";
+
+function AppBtn({ onPress, title, clickedBtn, btnId, setClickedBtn }){
+	React.useEffect(() => {
+		getChatsForUser().then((result) => {
+			for (let i = 0; i < result.length; i++) {
+				if (result[i].id + "btn" === btnId) {
+					setClickedBtn(true);
+				}
+			}
+		});
+	}, []);
+	return (
+	<TouchableOpacity onPress={onPress} style={clickedBtn ? styles.clickedAppBtnContainer: styles.appButtonContainer }>
+	  <Text style={styles.appButtonText}>{title}</Text>
+	</TouchableOpacity>
+)};
 
 const CONTENT = [
 	{
@@ -45,6 +61,7 @@ const CONTENT = [
 
 const ExpandableComponent = ({ item, onClickFunction }) => {
 	const [layoutHeight, setLayOutHeight] = useState(0);
+	const [clickedBtn, setClickedBtn] = useState(false);
 
 	useEffect(() => {
 		if (item.isExpanded) {
@@ -74,10 +91,11 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 						</TouchableOpacity>
 					);
 				})}
-				<Button
+				<AppBtn clickedBtn={clickedBtn} setClickedBtn={setClickedBtn} btnId={item.id+"btn"}
+			 		key={item.id+"btn"}
 					title="I'm interested"
 					onPress={() => {
-						console.log(item.image);
+						setClickedBtn(true);
 						createChatGroup(
 							item.id,
 							item.category_name,
@@ -193,6 +211,7 @@ const styles = StyleSheet.create({
 	headerBtn: {
 		textAlign: "center",
 		justifyContent: "center",
+		color: "red"
 	},
 	item: {
 		backgroundColor: "orange",
@@ -230,4 +249,25 @@ const styles = StyleSheet.create({
 		textAlign: "center",
 		marginTop: 20,
 	},
+	appButtonContainer: {
+		elevation: 8,
+		backgroundColor: "blue",
+		borderRadius: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 12
+	  },
+	  appButtonText: {
+		fontSize: 18,
+		color: "#fff",
+		fontWeight: "bold",
+		alignSelf: "center",
+		textTransform: "uppercase"
+	  },
+	  clickedAppBtnContainer: {
+		elevation: 8,
+		backgroundColor: "red",
+		borderRadius: 10,
+		paddingVertical: 10,
+		paddingHorizontal: 12 
+	  },
 });
