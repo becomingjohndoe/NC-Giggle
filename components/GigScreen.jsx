@@ -59,10 +59,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 		<View key={item.id}>
 			<TouchableOpacity style={styles.item} onPress={onClickFunction}>
 				<Text style={styles.itemText}>{item.category_name}</Text>
-				<Text style={{color: 'blue'}}
-      				onPress={() => Linking.openURL(item.image)}>
-					<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
-				</Text>					
+					<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />				
 			</TouchableOpacity>
 			<View
 				style={{
@@ -99,6 +96,15 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 	);
 };
 
+const selectBestImage = (imageList) => {
+	const imageCandidates = imageList.filter((image) => { return image.width > 375} );
+	if(imageCandidates.length > 0) {
+		return 	imageList.filter((image) => { return image.width > 375} )[0].url;
+	} else {
+		return "https://cdn.pixabay.com/photo/2013/07/12/18/53/ticket-153937_960_720.png"
+	}
+}
+
 export default function GigScreen(props) {
 	const [multiSelect, setMultiSelect] = useState(false);
 	const [listDataSource, setListDataSource] = useState(CONTENT);
@@ -109,7 +115,7 @@ export default function GigScreen(props) {
 				isExpanded: false,
 				category_name: gig.name,
 				id: gig.id,
-				image: gig.images[4].url,
+				image: selectBestImage(gig.images),
 				subcategory: [
 					{ val: gig.dates.start.localDate },
 					{ val: gig.dates.status.code },
