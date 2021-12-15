@@ -114,7 +114,7 @@ const DrawerNavigation = ({ navigation, route }) => {
 										<Button
 											onPress={() => setModalVisible(!modalVisible)}
 											title="Filter"
-											color="gray"
+											color="#EBE645"
 										/>
 									</>
 								</>
