@@ -59,6 +59,7 @@ export const createChatGroup = async (
 					venue: eventVenue,
 					id: chatId,
 					image: eventImage,
+					gig: event,
 				},
 			},
 			{ merge: true }
@@ -81,14 +82,12 @@ export const addUserToChatGroup = async (chatId) => {
 export const getChatsForUser = async () => {
 	const userDocRef = doc(db, "users", auth.currentUser.uid);
 	const docSnap = await getDoc(userDocRef);
-	console.log(docSnap.exists(), "exists");
 	if (docSnap.data().chats) {
 		const chatList = docSnap.data().chats.map((chatId) => {
 			return getChatDoc(chatId);
 		});
 
 		return Promise.all(chatList).then((values) => {
-			console.log(values);
 			return values;
 		});
 	} else {
