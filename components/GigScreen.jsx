@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  LayoutAnimation,
-  Platform,
-  Button,
+	StyleSheet,
+	Text,
+	View,
+	Image,
+	SafeAreaView,
+	ScrollView,
+	TouchableOpacity,
+	LayoutAnimation,
+	Platform,
+	Button,
+	Linking
+
 } from "react-native";
 import { useState } from "react";
 import { getGigsForHomePage } from "../utils/api";
@@ -32,7 +34,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 		<View key={item.id}>
 			<TouchableOpacity style={styles.item} onPress={onClickFunction}>
 				<Text style={styles.itemText}>{item.category_name}</Text>
-				<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />
+					<Image source={{ uri: item.image }} style={{ width: 375, height: 200 }} />				
 			</TouchableOpacity>
 			<View
 				style={{
@@ -70,6 +72,15 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 
 };
 
+const selectBestImage = (imageList) => {
+	const imageCandidates = imageList.filter((image) => { return image.width > 375} );
+	if(imageCandidates.length > 0) {
+		return 	imageList.filter((image) => { return image.width > 375} )[0].url;
+	} else {
+		return "https://cdn.pixabay.com/photo/2013/07/12/18/53/ticket-153937_960_720.png"
+	}
+}
+
 export default function GigScreen(props) {
   const [multiSelect, setMultiSelect] = useState(false);
   const [listDataSource, setListDataSource] = useState([
@@ -80,6 +91,7 @@ export default function GigScreen(props) {
     },
   ]);
 
+
   const contentFormat = (results) => {
     return results.map((gig) => {
       if (gig.images !== undefined) {
@@ -87,7 +99,7 @@ export default function GigScreen(props) {
           isExpanded: false,
           category_name: gig.name,
           id: gig.id,
-          image: gig.images[4].url,
+          image: selectBestImage(gig.images),
           subcategory: [
             { val: gig.dates.start.localDate },
             { val: gig.dates.status.code },

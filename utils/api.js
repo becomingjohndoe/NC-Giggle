@@ -5,6 +5,7 @@ const ticketmasterApi = axios.create({
 });
 
 export const getGigsForHomePage = (genreId, sort, city) => {
+
   const currentDate = new Date();
   // console.log(
   //   city,
