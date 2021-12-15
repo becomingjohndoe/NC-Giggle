@@ -7,6 +7,7 @@ import {
 	StyleSheet,
 	Image,
 	StatusBar,
+	Linking,
 } from "react-native";
 import React from "react";
 import { Link } from "@react-navigation/native";
@@ -30,18 +31,28 @@ export default function ChatsList({ navigation }) {
 			) : (
 				<ScrollView>
 					{chats.map((chatroom) => {
-						console.log(chatroom);
-						const date = new Date(chatroom.date);
+						console.log(chatroom, "chatroom.gig");
+						const date = new Date(chatroom.gig.dates.start.localDate);
+						const time = chatroom.gig.dates.start.localTime;
 						return (
 							<View key={chatroom.id} style={styles.facebookCard}>
 								<View>
 									<Image source={{ uri: chatroom.image }} style={styles.cardImage} />
 								</View>
 								<View style={styles.eventDetails}>
-									<Text style={styles.date}>{date.toUTCString()}</Text>
+									<Text style={styles.date}>{`${date
+										.toString()
+										.slice(0, 16)} ${time}`}</Text>
 									<Text style={styles.title}>{chatroom.name}</Text>
 									<Text style={styles.venue}>{chatroom.venue}</Text>
-									<Text>{chatroom.users}</Text>
+									<Text
+										style={styles.buyTicket}
+										onPress={() => {
+											Linking.openURL(chatroom.gig.url);
+										}}
+									>
+										Buy Tickets
+									</Text>
 								</View>
 
 								<TouchableOpacity
@@ -70,16 +81,17 @@ export default function ChatsList({ navigation }) {
 }
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
+		backgroundColor: "#000957",
 	},
 	facebookCard: {
-		backgroundColor: "black",
+		backgroundColor: "#344CB7",
 		padding: 0,
 		margin: 10,
 		borderRadius: 10,
 		flex: 1,
 		opacity: 0.9,
-		shadowColor: "#171717",
+		shadowColor: "#000636",
 		shadowOffset: { width: -2, height: 4 },
 		shadowOpacity: 0.5,
 		shadowRadius: 3,
@@ -94,7 +106,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		margin: 15,
 		borderRadius: 5,
-		backgroundColor: "white",
+		backgroundColor: "#EBE645",
 		flex: 1,
 		textAlign: "center",
 	},
@@ -126,5 +138,10 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		fontWeight: "bold",
 		color: "grey",
+	},
+	buyTicket: {
+		fontSize: 15,
+		fontWeight: "bold",
+		color: "#EBE645",
 	},
 });
