@@ -1,4 +1,4 @@
-import { View, TextInput, Button, StyleSheet, Text } from "react-native";
+import { View, TextInput, Button, StyleSheet, Text, Image } from "react-native";
 import React, { useContext } from "react";
 import { signIn, signOutUser, getUserInfo } from "../firebase";
 import { UserContext } from "../context/context";
@@ -8,6 +8,7 @@ export default function Login({ navigation, route }) {
 	const [password, setPassword] = React.useState("");
 	return (
 		<View style={styles.container}>
+			<Image source={require("../images/3.png")} style={{ width: 375, height: 200 }}></Image>
 			<TextInput
 				style={{ height: 40, borderColor: "blue", borderWidth: 2 }}
 				placeholder="email"
@@ -41,7 +42,7 @@ export default function Login({ navigation, route }) {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: "#fff",
+		backgroundColor: "#000957",
 		alignItems: "center",
 		justifyContent: "center",
 	},
