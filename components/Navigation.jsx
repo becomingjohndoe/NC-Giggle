@@ -23,6 +23,7 @@ import { UserContext } from "../context/context";
 import ChatsList from "./ChatsList";
 import { TextInput } from "react-native-gesture-handler";
 import { getUserInfo } from "../firebase";
+import CustomDrawer from "./CustomDrawer";
 
 const Drawer = createDrawerNavigator();
 
@@ -79,7 +80,6 @@ const DrawerNavigation = ({ navigation, route }) => {
     setModalVisible(!modalVisible);
   };
   useEffect(() => {
-    // console.log("useEffect");
     getUserInfo().then((user) => {
       if (user) {
         console.log(user);
@@ -101,8 +101,12 @@ const DrawerNavigation = ({ navigation, route }) => {
   }
   return (
     <>
-      {/* {console.log(gigs, "gigs in return")} */}
-      <Drawer.Navigator initialRouteName="Home">
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawer {...props} />}
+        initialRouteName="Home"
+        screenOptions={{ headerStyle: { backgroundColor: "#344CB7" } }}
+      >
+
         {gigs ? (
           <Drawer.Screen
             name="Home"
