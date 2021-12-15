@@ -42,7 +42,7 @@ const UserProfile = ({ route }) => {
     });
   }, []);
 
-  console.log(userInfo);
+  // console.log(userInfo);
 
   // const genre = genres.find((item) => item.id === userInfo.genrePreferences[0]);
   return (
@@ -60,10 +60,8 @@ const UserProfile = ({ route }) => {
       )}
       {pickedGenres ? (
         <View>
-          <Text>Genres I'm interested in:</Text>
-          {pickedGenres.map((choice) => {
-            return <Text key={genres[choice]}> {genres[choice]}</Text>;
-          })}
+          <Text>Genre I'm interested in:</Text>
+          <Text key={pickedGenres}> {genres[pickedGenres]}</Text>
         </View>
       ) : (
         <Text>Choose some Genres!</Text>
