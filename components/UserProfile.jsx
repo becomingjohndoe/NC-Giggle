@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { StyleSheet, Text, View, Button, Image } from "react-native";
+import { StyleSheet, Text, View, Button, Image, TouchableOpacity } from "react-native";
 import { signOutUser, getUserInfo } from "../firebase";
-import { getAuth } from "firebase/auth";
 import { UserContext } from "../context/context";
 
 const UserProfile = ({ route }) => {
@@ -34,6 +33,20 @@ const UserProfile = ({ route }) => {
     KnvZfZ7vAeF: "World",
   };
 
+  function AppBtn({ onPress, title, clickedBtn, btnId, setClickedBtn }) {
+    
+    return (
+      <TouchableOpacity
+        onPress={onPress}
+        style={
+          clickedBtn ? styles.clickedAppBtnContainer : styles.appButtonContainer
+        }
+      >
+        <Text style={styles.appButtonText}>{clickedBtn ? "Interested" : title}</Text>
+      </TouchableOpacity>
+    );
+  }
+
   useEffect(() => {
     getUserInfo().then((res) => {
       const info = res;
@@ -47,33 +60,35 @@ const UserProfile = ({ route }) => {
   // const genre = genres.find((item) => item.id === userInfo.genrePreferences[0]);
   return (
     <View style={styles.container}>
+    <View style={styles.facebookCard}>
       <Image
         source={{ uri: userInfo.profile_picture }}
-        style={{ width: 100, height: 100 }}
+        style={styles.cardImage}
       ></Image>
-      <Text>Name: {userInfo.displayName} </Text>
-      <Text>Email: {userInfo.email} </Text>
+      <Text style={styles.title}>{userInfo.displayName} </Text>
+      <Text style={styles.eventDetails}>Email: {userInfo.email} </Text>
       {userInfo.city ? (
-        <Text>City: {userInfo.city} </Text>
+        <Text style={styles.eventDetails}>City: {userInfo.city} </Text>
       ) : (
-        <Text>Set your City!</Text>
+        <Text style={styles.eventDetails}>Set your City!</Text>
       )}
       {pickedGenres ? (
         <View>
-          <Text>Genres I'm interested in:</Text>
+          <Text style={styles.eventDetails}>Genres I'm interested in:</Text>
           {pickedGenres.map((choice) => {
-            return <Text key={genres[choice]}> {genres[choice]}</Text>;
+            return <Text key={genres[choice]} style={styles.eventDetails}>{genres[choice]}</Text>;
           })}
         </View>
       ) : (
-        <Text>Choose some Genres!</Text>
+        <Text style={styles.eventDetails}>Choose some Genres!</Text>
       )}
       {userInfo.bio ? (
-        <Text> Bio: {userInfo.bio} </Text>
+        <Text style={styles.eventDetails}>Bio: {userInfo.bio} </Text>
       ) : (
-        <Text>Make your Bio!</Text>
+        <Text style={styles.eventDetails}>Make your Bio!</Text>
       )}
-      <Button
+    </View>
+      <AppBtn
         title="sign out"
         onPress={() => {
           signOutUser().then(() => {
@@ -91,11 +106,81 @@ const UserProfile = ({ route }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+		backgroundColor: "#000957",
+	},
+	facebookCard: {
+		backgroundColor: "#344CB7",
+		padding: 0,
+		margin: 10,
+		borderRadius: 10,
+		// flex: 1,
+		flexGrow: 0,
+		opacity: 0.9,
+		shadowColor: "#000636",
+		shadowOffset: { width: -2, height: 4 },
+		shadowOpacity: 0.5,
+		shadowRadius: 3,
+	},
+	cardImage: {
+		width: "100%",
+		height: 200,
+		borderTopLeftRadius: 10,
+		borderTopRightRadius: 10,
+	},
+	goToChatroomButton: {
+		padding: 10,
+		margin: 15,
+		borderRadius: 5,
+		backgroundColor: "white",
+		flex: 1,
+		textAlign: "center",
+	},
+  appButtonContainer: {
+		elevation: 8,
+		backgroundColor: "#fff",
+		borderRadius: 10,
+		padding: 10,
+		margin: 15,
+	},
+	appButtonText: {
+		fontSize: 18,
+		color: "black",
+		fontWeight: "bold",
+		alignSelf: "center",
+		textTransform: "uppercase",
+	},
+	clickedAppBtnContainer: {
+		elevation: 8,
+		backgroundColor: "#EBE645",
+		borderRadius: 10,
+		padding: 10,
+		margin: 15,
+	},
+	eventDetails: {
+		flex: 1,
+		flexDirection: "column",
+		justifyContent: "space-around",
+		alignItems: "flex-start",
+		paddingLeft: 10,
+    color: "white",
+    fontSize: 15,
+    padding: 1,
+	},
+	date: {
+		fontSize: 15,
+		color: "white",
+	},
+	title: {
+		fontSize: 20,
+		fontWeight: "bold",
+		color: "white",
+		padding: 10,
+	},
+	venue: {
+		fontSize: 15,
+		fontWeight: "bold",
+		color: "grey",
+	},
 });
 
 export default UserProfile;
