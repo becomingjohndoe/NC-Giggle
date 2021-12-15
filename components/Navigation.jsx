@@ -15,6 +15,7 @@ import {
   Pressable,
   Picker,
   Dimensions,
+  Image,
 } from "react-native";
 
 import { UserContext } from "../context/context";
@@ -114,7 +115,7 @@ const DrawerNavigation = ({ navigation, route }) => {
                     <Button
                       onPress={() => setModalVisible(!modalVisible)}
                       title="Filter"
-                      color="gray"
+                      color="#577BC1"
                     />
                   </>
                 </>
@@ -152,6 +153,10 @@ const DrawerNavigation = ({ navigation, route }) => {
       <View>
         <Modal visible={modalVisible} animationType="slide">
           <View style={styles.container}>
+            <Image
+              source={require("../images/3.png")}
+              style={{ width: 375, height: 200 }}
+            ></Image>
             <Text style={styles.text}>Select a genre:</Text>
             <Picker
               style={styles.input}
