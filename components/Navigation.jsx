@@ -14,6 +14,8 @@ import {
   Modal,
   Pressable,
   Picker,
+  Dimensions,
+  Image,
 } from "react-native";
 
 import { UserContext } from "../context/context";
@@ -37,7 +39,7 @@ const DrawerNavigation = ({ navigation, route }) => {
   const [initialGenre, setInitialGenre] = useState(userParams.genre);
   const [gigs, setGigs] = useState([{}]);
   const [genres, setGenres] = useState([
-    { value: "", label: "Select a genre" },
+    { value: "", label: "-" },
     { value: "KnvZfZ7vAvv", label: "Alternative" },
     { value: "KnvZfZ7vAve", label: "Ballads/Romantic" },
     { value: "KnvZfZ7vAvd", label: "Blues" },
@@ -78,7 +80,6 @@ const DrawerNavigation = ({ navigation, route }) => {
     setModalVisible(!modalVisible);
   };
   useEffect(() => {
-    console.log("useEffect");
     getUserInfo().then((user) => {
       if (user) {
         console.log(user);
@@ -105,6 +106,7 @@ const DrawerNavigation = ({ navigation, route }) => {
         initialRouteName="Home"
         screenOptions={{ headerStyle: { backgroundColor: "#344CB7" } }}
       >
+
         {gigs ? (
           <Drawer.Screen
             name="Home"
@@ -117,7 +119,7 @@ const DrawerNavigation = ({ navigation, route }) => {
                     <Button
                       onPress={() => setModalVisible(!modalVisible)}
                       title="Filter"
-                      color="gray"
+                      color="#577BC1"
                     />
                   </>
                 </>
@@ -155,8 +157,13 @@ const DrawerNavigation = ({ navigation, route }) => {
       <View>
         <Modal visible={modalVisible} animationType="slide">
           <View style={styles.container}>
+            <Image
+              source={require("../images/3.png")}
+              style={{ width: 375, height: 200 }}
+            ></Image>
             <Text style={styles.text}>Select a genre:</Text>
             <Picker
+              style={styles.input}
               selectedValue={genreValue}
               onChange={(itemValue) => setGenreValue(itemValue.target.value)}
             >
@@ -172,11 +179,13 @@ const DrawerNavigation = ({ navigation, route }) => {
             </Picker>
             <Text style={styles.text}>City:</Text>
             <TextInput
+              style={styles.input}
               defaultValue={userCity}
               onChange={(city) => setUserCity(city.target.value)}
             />
             <Text style={styles.text}>Sort By:</Text>
             <Picker
+              style={styles.input}
               selectedValue={sortByValue}
               onChange={(itemValue) => setSortByValue(itemValue.target.value)}
             >
@@ -192,12 +201,12 @@ const DrawerNavigation = ({ navigation, route }) => {
             </Picker>
 
             <Pressable
-              style={[styles.button]}
+              style={styles.button}
               onPress={() => {
                 filter();
               }}
             >
-              <Text>Apply</Text>
+              <Text style={styles.text}>Apply</Text>
             </Pressable>
           </View>
         </Modal>
@@ -207,24 +216,35 @@ const DrawerNavigation = ({ navigation, route }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    borderColor: "red",
-    borderWidth: 3,
-    borderStyle: "solid",
+    backgroundColor: "#000957",
     flex: 1,
-    paddingTop: 40,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "left",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
   text: {
-    marginBottom: 20,
-    marginTop: 20,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "700",
+    color: "#EBE645",
   },
   button: {
-    borderRadius: 20,
-    padding: 10,
+    position: "fixed",
+    bottom: 0,
+    backgroundColor: "#577BC1",
+    alignItems: "center",
+    fontSize: 16,
+    padding: 5,
     elevation: 2,
+    width: Dimensions.get("window").width,
+  },
+  input: {
+    marginBottom: 30,
+    backgroundColor: "#577BC1",
+    color: "#EBE645",
+    fontSize: 24,
+    height: 40,
+    width: Dimensions.get("window").width,
   },
 });
 export default DrawerNavigation;
