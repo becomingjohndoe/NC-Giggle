@@ -59,6 +59,7 @@ export const createChatGroup = async (
 					venue: eventVenue,
 					id: chatId,
 					image: eventImage,
+					gig: event,
 				},
 			},
 			{ merge: true }
