@@ -82,12 +82,11 @@ const DrawerNavigation = ({ navigation, route }) => {
   useEffect(() => {
     getUserInfo().then((user) => {
       if (user) {
-        console.log(user.genrePreferences);
         setUserCity(user.city);
         setInitialCity(user.city);
         setInitialGenre(user.genrePreferences);
       }
-      console.log(initialGenre, sortByValue, initialCity);
+      //   console.log(initialGenre, sortByValue, initialCity);
       getGigsForHomePage(user.genrePreferences, sortByValue, initialCity).then(
         (results) => {
           setGigs(results);
