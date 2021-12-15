@@ -60,10 +60,22 @@ export default function ChatsList({ navigation }) {
 									onPress={() => {
 										navigation.navigate("Chats", {
 											id: chatroom.id,
+											channel: "messages",
 										});
 									}}
 								>
 									<Text style={styles.buttonInner}>Go to Chatroom</Text>
+								</TouchableOpacity>
+								<TouchableOpacity
+									style={styles.goToChatroomButton}
+									onPress={() => {
+										navigation.navigate("GigDetails", {
+											id: chatroom.id,
+											gig: chatroom.gig,
+										});
+									}}
+								>
+									<Text style={styles.buttonInner}>Crowd Page</Text>
 								</TouchableOpacity>
 							</View>
 						);

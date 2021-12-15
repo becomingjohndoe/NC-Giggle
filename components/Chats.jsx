@@ -47,7 +47,7 @@ export default function Chats(props) {
 
 		// Start listening to the query.
 		onSnapshot(recentMessagesQuery, function (snapshot) {
-			setMessageList(() => [...snapshot.data().messages]);
+			setMessageList(() => [...snapshot.data()[props.route.params.channel]]);
 		});
 	}, [props.route.params.id]);
 

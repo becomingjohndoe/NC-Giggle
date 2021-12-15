@@ -52,6 +52,8 @@ export const createChatGroup = async (
 			chatDocRef,
 			{
 				messages: [],
+				help: [],
+				meetup: [],
 				users: [],
 				event: {
 					date: eventDate,
