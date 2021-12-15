@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     color: "#EBE645",
     fontSize: 24,
     height: 40,
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width - 40,
   },
   button: {
     backgroundColor: "#577BC1",

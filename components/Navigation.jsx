@@ -104,7 +104,7 @@ const DrawerNavigation = ({ navigation, route }) => {
 			<Drawer.Navigator
 				drawerContent={(props) => <CustomDrawer {...props} />}
 				initialRouteName="Home"
-				screenOptions={{ headerStyle: { backgroundColor: "#344CB7" } }}
+				// screenOptions={{ headerStyle: { backgroundColor: "#344CB7" } }}
 			>
 				{gigs ? (
 					<Drawer.Screen
@@ -137,7 +137,7 @@ const DrawerNavigation = ({ navigation, route }) => {
 										<Button
 											onPress={() => setModalVisible(!modalVisible)}
 											title="Filter"
-											color="gray"
+											color="#EBE645"
 										/>
 									</>
 								</>
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#000957",
 		flex: 1,
 		justifyContent: "center",
-		alignItems: "flex-start",
+		alignItems: "center",
 		width: Dimensions.get("window").width,
 		height: Dimensions.get("window").height,
 	},
@@ -235,15 +235,17 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		padding: 5,
 		elevation: 2,
-		width: Dimensions.get("window").width,
+		width: Dimensions.get("window").width -40,
+		marginTop: 10,
 	},
 	input: {
-		marginBottom: 30,
+		marginBottom: 20,
 		backgroundColor: "#577BC1",
 		color: "#EBE645",
 		fontSize: 24,
 		height: 40,
-		width: Dimensions.get("window").width,
+		alignItems: "center"
+		// width: Dimensions.get("window").width,
 	},
 });
 export default DrawerNavigation;

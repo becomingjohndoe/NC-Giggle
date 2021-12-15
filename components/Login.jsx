@@ -63,16 +63,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonsView: {
-    flex: 1,
-  },
+  // buttonsView: {
+  //   flex: 1,
+  // },
   input: {
     marginBottom: 30,
     backgroundColor: "#577BC1",
     color: "#EBE645",
     fontSize: 24,
     height: 40,
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width - 40,
+    // marginRight: 5,
+    // marginLeft: 5
   },
   button: {
     backgroundColor: "#577BC1",

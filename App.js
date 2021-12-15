@@ -39,9 +39,10 @@ export default function App() {
                 <Stack.Screen
                   name="Login"
                   component={Login}
+                  options={{ headerShown: false }}
                   initialParams={{ newUser: setUser }}
                 />
-                <Stack.Screen name="Sign Up" component={SignUp} />
+                <Stack.Screen name="Sign Up" component={SignUp}  options={{ headerShown: false }}/>
                 <Stack.Screen
                   name="Profile"
                   component={Profile}

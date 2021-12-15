@@ -20,7 +20,7 @@ export default function SignUp({ navigation }) {
         source={require("../images/3.png")}
         style={{ width: 375, height: 200 }}
       ></Image>
-      <Text style={styles.headerText}>Insert Email and Password</Text>
+      {/* <Text style={styles.headerText}>Insert Email and Password</Text> */}
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -42,7 +42,7 @@ export default function SignUp({ navigation }) {
           });
         }}
       >
-        <Text style={styles.text}>Sing Up</Text>
+        <Text style={styles.text}>Sign Up</Text>
       </Pressable>
     </View>
   );
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     color: "#EBE645",
     fontSize: 24,
     height: 40,
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width - 40, 
   },
   button: {
     backgroundColor: "#577BC1",
