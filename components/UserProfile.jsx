@@ -1,9 +1,12 @@
+
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Button, Image } from "react-native";
 import { signOutUser, getUserInfo } from "../firebase";
 import { getAuth } from "firebase/auth";
+import { UserContext } from "../context/context";
 
 const UserProfile = () => {
+  const { setUserParams } = useContext(UserContext);
   const [userInfo, setUserInfo] = useState({});
   const [pickedGenres, setPickedGenres] = useState(false);
   const genres =
@@ -61,7 +64,18 @@ const UserProfile = () => {
 }
 )}</View> : <Text>Choose some Genres!</Text>}
       {userInfo.bio ? <Text> Bio: {userInfo.bio} </Text> : <Text>Make your Bio!</Text>}
-      <Button title="sign out" onPress={signOutUser} />
+      <Button
+				title="sign out"
+				onPress={() => {
+					signOutUser().then(() => {
+						setUserParams({
+							city: "",
+							genre: "",
+						});
+						route.params.newUser(false);
+					});
+				}}
+			/>
     </View>
   );
 };
@@ -74,5 +88,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
 
 export default UserProfile;

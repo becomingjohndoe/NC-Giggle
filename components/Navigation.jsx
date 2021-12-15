@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import GigScreen from "./GigScreen";
+import ErrorScreen from "./ErrorScreen";
 import Profile from "./Profile";
 import Chats from "./Chats";
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -15,26 +16,27 @@ import {
 	Picker,
 } from "react-native";
 
-
 import { UserContext } from "../context/context";
 
-import { checkForUpdateAsync } from "expo-updates";
 import ChatsList from "./ChatsList";
-
+import { TextInput } from "react-native-gesture-handler";
+import { getUserInfo } from "../firebase";
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigation = () => {
-	const {userParams} = useContext(UserContext);
-	console.log(userParams.city, "Params")
+const DrawerNavigation = ({ navigation, route }) => {
+	const { userParams } = useContext(UserContext);
+	// console.log(userParams);
 	const [modalVisible, setModalVisible] = useState(false);
-	const [genreValue, setGenreValue] = useState(userParams.genre);
+	const [isLoading, setIsLoading] = useState(true);
+	const [genreValue, setGenreValue] = useState("");
 	const [sortByValue, setSortByValue] = useState("date,asc");
-	const [userCity, setUserCity] = useState(userParams.city);
-	console.log(userParams.city, '<=============')
+	const [userCity, setUserCity] = useState("");
+	const [initialCity, setInitialCity] = useState(userParams.city);
+	const [initialGenre, setInitialGenre] = useState(userParams.genre);
 	const [gigs, setGigs] = useState([{}]);
-	const [filtered, setFiltered] = useState(false);
 	const [genres, setGenres] = useState([
+		{ value: "", label: "Select a genre" },
 		{ value: "KnvZfZ7vAvv", label: "Alternative" },
 		{ value: "KnvZfZ7vAve", label: "Ballads/Romantic" },
 		{ value: "KnvZfZ7vAvd", label: "Blues" },
@@ -71,35 +73,78 @@ const DrawerNavigation = () => {
 	const filter = () => {
 		getGigsForHomePage(genreValue, sortByValue, userCity).then((results) => {
 			setGigs(results);
-			setFiltered(true);
 		});
 		setModalVisible(!modalVisible);
 	};
-
+	useEffect(() => {
+		console.log("useEffect");
+		getUserInfo().then((user) => {
+			if (user) {
+				console.log(user);
+				setUserCity(user.city);
+				setInitialCity(user.city);
+				setInitialGenre(user.genrePrefrences[0]);
+			}
+			getGigsForHomePage(initialGenre, sortByValue, initialCity).then(
+				(results) => {
+					setGigs(results);
+				}
+			);
+		});
+		setIsLoading(false);
+		// console.log("here", userParams);
+	}, [initialCity]);
+	if (isLoading) {
+		return <Text>Loading</Text>;
+	}
 	return (
 		<>
+			{console.log(gigs, "gigs in return")}
 			<Drawer.Navigator initialRouteName="Home">
-				<Drawer.Screen
-					name="Home"
-					children={() => (
-						<GigScreen events={gigs} genreId={genreValue} sort={sortByValue} city={userCity}/>
-					)}
-					options={{
-						headerTitle: "Gigs",
-						headerRight: () => (
-							<>
+				{gigs ? (
+					<Drawer.Screen
+						name="Home"
+						children={() => <GigScreen events={gigs} />}
+						options={{
+							headerTitle: "Gigs",
+							headerRight: () => (
 								<>
-									<Button
-										onPress={() => setModalVisible(!modalVisible)}
-										title="Filter"
-										color="gray"
-									/>
+									<>
+										<Button
+											onPress={() => setModalVisible(!modalVisible)}
+											title="Filter"
+											color="gray"
+										/>
+									</>
 								</>
-							</>
-						),
-					}}
+							),
+						}}
+					/>
+				) : (
+					<Drawer.Screen
+						name="Home"
+						component={ErrorScreen}
+						options={{
+							headerTitle: "Gigs",
+							headerRight: () => (
+								<>
+									<>
+										<Button
+											onPress={() => setModalVisible(!modalVisible)}
+											title="Filter"
+											color="gray"
+										/>
+									</>
+								</>
+							),
+						}}
+					/>
+				)}
+				<Drawer.Screen
+					name="Profile"
+					component={UserProfile}
+					initialParams={route.params}
 				/>
-				<Drawer.Screen name="Profile" component={UserProfile} />
 				{/* <Drawer.Screen name="Chatroom" component={Chats} /> */}
 				<Drawer.Screen name="ChatsList" component={ChatsList} />
 			</Drawer.Navigator>
@@ -121,6 +166,11 @@ const DrawerNavigation = () => {
 								);
 							})}
 						</Picker>
+						<Text style={styles.text}>City:</Text>
+						<TextInput
+							defaultValue={userCity}
+							onChange={(city) => setUserCity(city.target.value)}
+						/>
 						<Text style={styles.text}>Sort By:</Text>
 						<Picker
 							selectedValue={sortByValue}
@@ -137,7 +187,12 @@ const DrawerNavigation = () => {
 							})}
 						</Picker>
 
-						<Pressable style={[styles.button]} onPress={filter}>
+						<Pressable
+							style={[styles.button]}
+							onPress={() => {
+								filter();
+							}}
+						>
 							<Text>Apply</Text>
 						</Pressable>
 					</View>

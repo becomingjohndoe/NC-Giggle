@@ -1,11 +1,12 @@
 import { Text, View, Button, TextInput, StyleSheet } from "react-native";
 import { getAuth } from "firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { signOutUser, updateUser } from "../firebase";
 import MultiSelect from "react-native-multiple-select";
 export default function Profile({ navigation, route }) {
+	console.log(route);
 	const [userData, setUserData] = React.useState({ isNewUser: false });
-
+	const [isLoading, setIsLoading] = React.useState(true);
 	const auth = getAuth();
 	const genres = [
 		{ id: "KnvZfZ7vAvv", name: "Alternative" },
@@ -35,6 +36,14 @@ export default function Profile({ navigation, route }) {
 	const onSelectedItemsChange = (selectedItems) => {
 		setUserData({ ...userData, genrePreferences: selectedItems });
 	};
+	useEffect(() => {
+		if (auth.currentUser) {
+			setIsLoading(false);
+		}
+	}, [auth.currentUser]);
+	if (isLoading) {
+		return <Text>isLoading</Text>;
+	}
 	return (
 		<View>
 			<Text>{auth.currentUser.displayName} Profile</Text>
@@ -72,8 +81,9 @@ export default function Profile({ navigation, route }) {
 			<Button
 				title="Update Profile"
 				onPress={() => {
-					updateUser(userData);
-					route.params.newUser(false);
+					updateUser(userData).then(() => {
+						route.params.newUser(true);
+					});
 				}}
 			/>
 			<Button

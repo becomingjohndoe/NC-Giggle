@@ -11,49 +11,24 @@ import {
 	Platform,
 	Button,
 	Linking
+
 } from "react-native";
 import { useState } from "react";
 import { getGigsForHomePage } from "../utils/api";
 
 import { addUserToChatGroup, createChatGroup } from "../firebase-sw-messaging";
 
-const CONTENT = [
-	{
-		isExpanded: false,
-		category_name: "item 1",
-		subcategory: [
-			{ id: 1, val: "Sub 1" },
-			{ id: 2, val: "Sub 2" },
-		],
-	},
-	{
-		isExpanded: false,
-		category_name: "item 2",
-		subcategory: [
-			{ id: 3, val: "Sub 3" },
-			{ id: 4, val: "Sub 4" },
-		],
-	},
-	{
-		isExpanded: false,
-		category_name: "item 3",
-		subcategory: [
-			{ id: 5, val: "Sub 5" },
-			{ id: 6, val: "Sub 6" },
-		],
-	},
-];
-
 const ExpandableComponent = ({ item, onClickFunction }) => {
-	const [layoutHeight, setLayOutHeight] = useState(0);
+  const [layoutHeight, setLayOutHeight] = useState(0);
 
-	useEffect(() => {
-		if (item.isExpanded) {
-			setLayOutHeight(null);
-		} else {
-			setLayOutHeight(0);
-		}
-	}, [item.isExpanded]);
+  useEffect(() => {
+    if (item.isExpanded) {
+      setLayOutHeight(null);
+    } else {
+      setLayOutHeight(0);
+    }
+  }, [item.isExpanded]);
+
 
 	return (
 		<View key={item.id}>
@@ -94,6 +69,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 			</View>
 		</View>
 	);
+
 };
 
 const selectBestImage = (imageList) => {
@@ -106,86 +82,99 @@ const selectBestImage = (imageList) => {
 }
 
 export default function GigScreen(props) {
-	const [multiSelect, setMultiSelect] = useState(false);
-	const [listDataSource, setListDataSource] = useState(CONTENT);
+  const [multiSelect, setMultiSelect] = useState(false);
+  const [listDataSource, setListDataSource] = useState([
+    {
+      isExpanded: false,
+      category_name: "item 1",
+      subcategory: [{ id: 1, val: "Sub 1" }],
+    },
+  ]);
 
-	const contentFormat = (results) => {
-		return results.map((gig) => {
-			return {
-				isExpanded: false,
-				category_name: gig.name,
-				id: gig.id,
-				image: selectBestImage(gig.images),
-				subcategory: [
-					{ val: gig.dates.start.localDate },
-					{ val: gig.dates.status.code },
-					{ val: gig._embedded.venues[0].name },
-				],
-			};
-		});
-	};
 
-	const updateLayout = (index) => {
-		LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-		const array = [...listDataSource];
-		if (multiSelect) {
-			//If multiple select is enabled
-			array[index]["isExpanded"] = !array[index]["isExpanded"];
-		} else {
-			//If single select is enabled
-			array.map((value, placeindex) => {
-				return placeindex === index
-					? (array[placeindex]["isExpanded"] = !array[placeindex]["isExpanded"])
-					: (array[placeindex]["isExpanded"] = false);
-			});
-		}
-		setListDataSource(array);
-	};
+  const contentFormat = (results) => {
+    return results.map((gig) => {
+      if (gig.images !== undefined) {
+        return {
+          isExpanded: false,
+          category_name: gig.name,
+          id: gig.id,
+          image: selectBestImage(gig.images),
+          subcategory: [
+            { val: gig.dates.start.localDate },
+            { val: gig.dates.status.code },
+            { val: gig._embedded.venues[0].name },
+          ],
+        };
+      } else {
+        return {
+          isExpanded: false,
+          category_name: "",
+          id: "",
+          image: "",
+          subcategory: [{ val: "" }, { val: "" }, { val: "" }],
+        };
+      }
+    });
+  };
 
-	useEffect(() => {
-		getGigsForHomePage(props.genreId, props.sort, props.city)
-			.then((results) => {
-				let newContentFormat = contentFormat(results);
+  const updateLayout = (index) => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    const array = [...listDataSource];
+    if (multiSelect) {
+      //If multiple select is enabled
+      array[index]["isExpanded"] = !array[index]["isExpanded"];
+    } else {
+      //If single select is enabled
+      array.map((value, placeindex) => {
+        return placeindex === index
+          ? (array[placeindex]["isExpanded"] = !array[placeindex]["isExpanded"])
+          : (array[placeindex]["isExpanded"] = false);
+      });
+    }
+    setListDataSource(array);
+  };
 
-				setListDataSource(newContentFormat);
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	}, [props.genreId, props.sort, props.city]);
-
-	return (
-		<SafeAreaView style={{ flex: 1 }}>
-			<View style={styles.container}>
-				<View style={styles.header}>
-					<Text style={styles.titleText}>Gig List</Text>
-					<TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
-						<Text style={styles.headerBtn}>
-							{multiSelect
-								? "Multiple selector\n Enabled"
-								: "Single selector\n Enabled"}
-						</Text>
-					</TouchableOpacity>
-				</View>
-				<ScrollView>
-					{listDataSource.map((item, key) => {
-						return (
-							<ExpandableComponent
-								key={item.category_name + key.toString()}
-								item={item}
-								onClickFunction={() => {
-									updateLayout(key);
-								}}
-							/>
-						);
-					})}
-				</ScrollView>
-			</View>
-		</SafeAreaView>
-	);
+  useEffect(() => {
+    let newContentFormat = contentFormat(props.events);
+    setListDataSource(newContentFormat);
+    // console.log("gigscreen");
+  }, [props.events]);
+  //   console.log(listDataSource);
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.titleText}>Gig List</Text>
+          <TouchableOpacity onPress={() => setMultiSelect(!multiSelect)}>
+            <Text style={styles.headerBtn}>
+              {multiSelect
+                ? "Multiple selector\n Enabled"
+                : "Single selector\n Enabled"}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <ScrollView>
+          {/* {console.log("render")} */}
+          {listDataSource.map((item, key) => {
+            return (
+              <ExpandableComponent
+                key={key.toString()}
+                item={item}
+                onClickFunction={() => {
+                  updateLayout(key);
+                }}
+              />
+            );
+          })}
+        </ScrollView>
+      </View>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
+
 	container: {
 		flex: 1,
 		backgroundColor: "#fff",

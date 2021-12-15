@@ -1,79 +1,68 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
-import Login from "./components/Login";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import SignUp from "./components/SignUp";
 import { onAuthStateChanged, getAuth } from "@firebase/auth";
 import { checkNewuser } from "./firebase";
+import { UserProvider } from "./context/context";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
 import Profile from "./components/Profile";
 import Chats from "./components/Chats";
-
 import DrawerNavigation from "./components/Navigation";
-import { UserProvider } from "./context/context";
 
 export default function App() {
-  const [user, setUser] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(true);
-  const [isNewUser, setIsNewUser] = React.useState(true);
+	const [user, setUser] = React.useState(false);
+	const [isLoading, setIsLoading] = React.useState(true);
 
-  const auth = getAuth();
-  const Stack = createNativeStackNavigator();
-  const HomeStack = createNativeStackNavigator();
+	const auth = getAuth();
+	const Stack = createNativeStackNavigator();
 
-  // check if user is loggen into firebase
-  useEffect(() => {
-    setIsLoading(true);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        checkNewuser().then((u) => {
-          setIsNewUser(u);
-        });
-      } else {
-        setUser(null);
-      }
-      setIsLoading(false);
-    });
-  }, []);
+	// check if user is loggen into firebase
+	useEffect(() => {
+		console.log(auth.currentUser);
+		setIsLoading(true);
+		checkNewuser().then((u) => {
+			setUser(u);
+		});
+		setIsLoading(false);
+	}, []);
 
-  if (isLoading) return <Text>Loading...</Text>;
-  return (
-    <>
-    <UserProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-          {user ? (
-            <>
-              {isNewUser ? (
-                <>
-                  <Stack.Screen
-                    name="Profile"
-                    component={Profile}
-                    options={{ headerShown: false }}
-                    initialParams={{ newUser: setIsNewUser }}
-                  />
-                </>
-              ) : (
-                <>
-                  <Stack.Screen
-                    name="navigator"
-                    component={DrawerNavigation}
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen name="Chats" component={Chats}></Stack.Screen>
-                </>
-              )}
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Sign Up" component={SignUp} />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
-      </UserProvider>
-    </>
-  );
+	if (isLoading) return <Text>Loading...</Text>;
+	return (
+		<>
+			<UserProvider>
+				<NavigationContainer>
+					<Stack.Navigator>
+						{!user ? (
+							<>
+								<Stack.Screen
+									name="Login"
+									component={Login}
+									initialParams={{ newUser: setUser }}
+								/>
+								<Stack.Screen name="Sign Up" component={SignUp} />
+								<Stack.Screen
+									name="Profile"
+									component={Profile}
+									options={{ headerShown: false }}
+									initialParams={{ newUser: setUser }}
+								/>
+							</>
+						) : (
+							<>
+								<Stack.Screen
+									name="navigator"
+									component={DrawerNavigation}
+									options={{ headerShown: false }}
+									initialParams={{ newUser: setUser }}
+								/>
+								<Stack.Screen name="Chats" component={Chats}></Stack.Screen>
+							</>
+						)}
+					</Stack.Navigator>
+				</NavigationContainer>
+			</UserProvider>
+		</>
+	);
 }

@@ -50,9 +50,8 @@ export const createUser = async (email, password) => {
 };
 
 export const signIn = async (email, password) => {
-	return signInWithEmailAndPassword(auth, email, password)
+	await signInWithEmailAndPassword(auth, email, password)
 		.then(() => {
-			console.log("User signed in successfully");
 			return auth.currentUser;
 		})
 		.catch((error) => {
@@ -86,14 +85,13 @@ export const checkNewuser = async () => {
 	}
 };
 
-export const getUserInfo = async () => { 
+export const getUserInfo = async () => {
 	if (auth.currentUser) {
-  	const docRef = doc(db, "users", auth.currentUser.uid);
-  	const docSnap = await getDoc(docRef); 
-  	return docSnap
-}
-}
-
+		const docRef = doc(db, "users", auth.currentUser.uid);
+		const docSnap = await getDoc(docRef);
+		return docSnap.data();
+	}
+};
 
 // use this when you need user information on a certain page/component
 // gets called when user is signed in
