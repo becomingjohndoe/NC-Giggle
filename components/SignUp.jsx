@@ -61,7 +61,9 @@ const styles = StyleSheet.create({
     color: "#EBE645",
     fontSize: 24,
     height: 40,
-    width: Dimensions.get("window").width - 40, 
+    borderRadius: 10,
+    padding: 10,
+    width: Dimensions.get("window").width - 50, 
   },
   button: {
     backgroundColor: "#577BC1",
@@ -70,13 +72,15 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     paddingBottom: 5,
+    borderRadius: 10,
     elevation: 2,
     width: Dimensions.get("window").width / 2,
   },
   text: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "700",
     color: "#EBE645",
+    padding: 7,
   },
   headerText: {
     fontSize: 28,
