@@ -22,7 +22,7 @@ export default function ChatsList({ navigation }) {
 			console.log(result);
 			setChats(result);
 		});
-	}, []);
+	});
 
 	return (
 		<View style={styles.container}>
