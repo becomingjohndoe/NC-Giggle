@@ -175,8 +175,9 @@ export default function GigScreen(props) {
 	}, [props.events]);
 	//   console.log(listDataSource);
 	return (
+		<View style={stylesRedesign.container}>
 		<SafeAreaView style={stylesRedesign.container}>
-			<View>
+			<View >
 				<ScrollView>
 					{/* {console.log("render")} */}
 					{listDataSource.map((item, key) => {
@@ -193,6 +194,7 @@ export default function GigScreen(props) {
 				</ScrollView>
 			</View>
 		</SafeAreaView>
+		</View >
 	);
 }
 
@@ -260,7 +262,7 @@ const stylesRedesign = StyleSheet.create({
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		// flex: 1,
 		backgroundColor: "#000957",
 		alignItems: "center",
 		justifyContent: "center",

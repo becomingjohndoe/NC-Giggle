@@ -48,6 +48,7 @@ export default function App() {
                   component={Profile}
                   options={{ headerShown: false }}
                   initialParams={{ newUser: setUser }}
+
                 />
               </>
             ) : (
@@ -67,3 +68,4 @@ export default function App() {
     </>
   );
 }
+
