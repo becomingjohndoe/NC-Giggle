@@ -40,11 +40,6 @@ export default function ChatsList({ navigation }) {
 									<Image source={{ uri: chatroom.image }} style={styles.cardImage} />
 								</View>
 								<View style={styles.eventDetails}>
-									<Text style={styles.date}>{`${date
-										.toString()
-										.slice(0, 16)} ${time}`}</Text>
-									<Text style={styles.title}>{chatroom.name}</Text>
-									<Text style={styles.venue}>{chatroom.venue}</Text>
 									<Text
 										style={styles.buyTicket}
 										onPress={() => {
@@ -53,6 +48,11 @@ export default function ChatsList({ navigation }) {
 									>
 										Buy Tickets
 									</Text>
+									<Text style={styles.date}>{`${date
+										.toString()
+										.slice(0, 16)} ${time}`}</Text>
+									<Text style={styles.title}>{chatroom.name}</Text>
+									<Text style={styles.venue}>{chatroom.venue}</Text>
 								</View>
 
 								<TouchableOpacity
@@ -120,24 +120,26 @@ const styles = StyleSheet.create({
 	eventDetails: {
 		flex: 1,
 		flexDirection: "column",
-		justifyContent: "space-around",
+		justifyContent: "space-evenly",
 		alignItems: "flex-start",
-		paddingLeft: 15,
-		paddingRight: 15,
+		padding: 15,
 	},
 	date: {
 		fontSize: 15,
 		color: "white",
+		paddingTop: 5,
 	},
 	title: {
 		fontSize: 20,
 		fontWeight: "bold",
 		color: "white",
+		paddingTop: 5,
 	},
 	venue: {
 		fontSize: 15,
 		fontWeight: "bold",
-		color: "grey",
+		color: "#fff",
+		paddingTop: 5,
 	},
 	buyTicket: {
 		fontSize: 15,
