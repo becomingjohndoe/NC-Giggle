@@ -7,12 +7,14 @@ import {
   Image,
   Dimensions,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { signIn } from "../firebase";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function Login({ navigation, route }) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [hidePass, setHidePass] = useState(true)
   return (
     <View style={styles.container}>
       <Image
@@ -25,12 +27,21 @@ export default function Login({ navigation, route }) {
         placeholderTextColor="#EBE645"
         onChangeText={(text) => setEmail(text)}
       />
+      <View style={styles.eye}>
       <TextInput
+        secureTextEntry={hidePass ? true : false}
         style={styles.input}
         placeholder="Password"
         placeholderTextColor="#EBE645"
         onChangeText={(text) => setPassword(text)}
-      />
+      /><Icon 
+        style={styles.eye}
+        name={hidePass ? 'eye-slash' : 'eye'}
+        size={15}
+        color="grey"
+        onPress={()=>{setHidePass(!hidePass)}}
+        />
+        </View>
       <View style={styles.buttonsView}>
         <Pressable
           style={styles.button}
@@ -41,7 +52,7 @@ export default function Login({ navigation, route }) {
             });
           }}
         >
-          <Text style={styles.text}>Sign In</Text>
+          <Text style={styles.text}>Log In</Text>
         </Pressable>
         <Pressable
           style={styles.button}
@@ -72,7 +83,9 @@ const styles = StyleSheet.create({
     color: "#EBE645",
     fontSize: 24,
     height: 40,
-    width: Dimensions.get("window").width - 40,
+    width: Dimensions.get("window").width - 50,
+    borderRadius: 10,
+    padding: 10
     // marginRight: 5,
     // marginLeft: 5
   },
@@ -83,12 +96,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 20,
     paddingBottom: 5,
+    borderRadius: 10,
     elevation: 2,
     width: Dimensions.get("window").width / 2,
   },
   text: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "700",
     color: "#EBE645",
+    padding: 7
   },
+  eye: {
+    flexDirection: "row",
+    alignItems: "baseline",
+    paddingLeft: 8
+  }
 });
