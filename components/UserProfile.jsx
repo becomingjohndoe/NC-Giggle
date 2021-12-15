@@ -65,16 +65,17 @@ const UserProfile = ({ route }) => {
         source={{ uri: userInfo.profile_picture }}
         style={styles.cardImage}
       ></Image>
+      <View></View>
       <Text style={styles.title}>{userInfo.displayName} </Text>
-      <Text style={styles.eventDetails}>Email: {userInfo.email} </Text>
+      <View><Text style={styles.eventTitle}>Email:</Text><Text style={styles.eventDetails}>{userInfo.email}</Text></View> 
       {userInfo.city ? (
-        <Text style={styles.eventDetails}>City: {userInfo.city} </Text>
+      <View><Text style={styles.eventTitle}>City:</Text><Text style={styles.eventDetails}>{userInfo.city} </Text></View>
       ) : (
         <Text style={styles.eventDetails}>Set your City!</Text>
       )}
       {pickedGenres ? (
         <View>
-          <Text style={styles.eventDetails}>Genres I'm interested in:</Text>
+          <Text style={styles.eventTitle}>Favourite Genres:</Text>
           {pickedGenres.map((choice) => {
             return <Text key={genres[choice]} style={styles.eventDetails}>{genres[choice]}</Text>;
           })}
@@ -83,7 +84,7 @@ const UserProfile = ({ route }) => {
         <Text style={styles.eventDetails}>Choose some Genres!</Text>
       )}
       {userInfo.bio ? (
-        <Text style={styles.eventDetails}>Bio: {userInfo.bio} </Text>
+        <View><Text style={styles.eventTitle}>Bio:</Text><Text style={styles.eventDetailsEnd}>{userInfo.bio} </Text></View>
       ) : (
         <Text style={styles.eventDetails}>Make your Bio!</Text>
       )}
@@ -107,6 +108,7 @@ const UserProfile = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
 		backgroundColor: "#000957",
+    flexGrow: 0,
 	},
 	facebookCard: {
 		backgroundColor: "#344CB7",
@@ -137,7 +139,7 @@ const styles = StyleSheet.create({
 	},
   appButtonContainer: {
 		elevation: 8,
-		backgroundColor: "#fff",
+		backgroundColor: "#EBE645",
 		borderRadius: 10,
 		padding: 10,
 		margin: 15,
@@ -156,25 +158,47 @@ const styles = StyleSheet.create({
 		padding: 10,
 		margin: 15,
 	},
-	eventDetails: {
+	eventTitle: {
 		flex: 1,
 		flexDirection: "column",
 		justifyContent: "space-around",
 		alignItems: "flex-start",
 		paddingLeft: 10,
     color: "white",
-    fontSize: 15,
-    padding: 1,
+    fontSize: 18,
+    padding: 7,
+    fontWeight: "bold",
 	},
+  eventDetails: {
+		flex: 1,
+		flexDirection: "column",
+		justifyContent: "space-around",
+		alignItems: "flex-start",
+		paddingLeft: 15,
+    color: "white",
+    fontSize: 14,
+    padding: 3,
+	},
+  eventDetailsEnd: {
+		flex: 1,
+		flexDirection: "column",
+		justifyContent: "space-around",
+		alignItems: "flex-start",
+		paddingLeft: 15,
+    color: "white",
+    fontSize: 14,
+    paddingBottom: 20
+  },
 	date: {
 		fontSize: 15,
 		color: "white",
 	},
 	title: {
-		fontSize: 20,
+		fontSize: 25,
 		fontWeight: "bold",
 		color: "white",
 		padding: 10,
+    textAlign: "center"
 	},
 	venue: {
 		fontSize: 15,
