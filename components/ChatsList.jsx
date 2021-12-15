@@ -18,43 +18,47 @@ export default function ChatsList({ navigation }) {
 
 	React.useEffect(() => {
 		getChatsForUser().then((result) => {
+			console.log(result);
 			setChats(result);
 		});
 	}, []);
 
 	return (
 		<View style={styles.container}>
-			{ chats.length === 0 ? <Text> Start signing up for chatrooms!</Text> :
-			<ScrollView>
-				{chats.map((chatroom) => {
-					console.log(chatroom);
-					const date = new Date(chatroom.date);
-					return (
-						<View key={chatroom.id} style={styles.facebookCard}>
-							<View>
-								<Image source={{ uri: chatroom.image }} style={styles.cardImage} />
-							</View>
-							<View style={styles.eventDetails}>
-								<Text style={styles.date}>{date.toUTCString()}</Text>
-								<Text style={styles.title}>{chatroom.name}</Text>
-								<Text style={styles.venue}>{chatroom.venue}</Text>
-								<Text>{chatroom.users}</Text>
-							</View>
+			{chats.length === 0 ? (
+				<Text> Start signing up for chatrooms!</Text>
+			) : (
+				<ScrollView>
+					{chats.map((chatroom) => {
+						console.log(chatroom);
+						const date = new Date(chatroom.date);
+						return (
+							<View key={chatroom.id} style={styles.facebookCard}>
+								<View>
+									<Image source={{ uri: chatroom.image }} style={styles.cardImage} />
+								</View>
+								<View style={styles.eventDetails}>
+									<Text style={styles.date}>{date.toUTCString()}</Text>
+									<Text style={styles.title}>{chatroom.name}</Text>
+									<Text style={styles.venue}>{chatroom.venue}</Text>
+									<Text>{chatroom.users}</Text>
+								</View>
 
-							<TouchableOpacity
-								style={styles.goToChatroomButton}
-								onPress={() => {
-									navigation.navigate("Chats", {
-										id: chatroom.id,
-									});
-								}}
-							>
-								<Text style={styles.buttonInner}>Go to Chatroom</Text>
-							</TouchableOpacity>
-						</View>
-					);
-				})}
-			</ScrollView>}
+								<TouchableOpacity
+									style={styles.goToChatroomButton}
+									onPress={() => {
+										navigation.navigate("Chats", {
+											id: chatroom.id,
+										});
+									}}
+								>
+									<Text style={styles.buttonInner}>Go to Chatroom</Text>
+								</TouchableOpacity>
+							</View>
+						);
+					})}
+				</ScrollView>
+			)}
 			<StatusBar
 				barStyle="dark-content"
 				hidden={false}
