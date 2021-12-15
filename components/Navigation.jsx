@@ -13,10 +13,10 @@ import {
 	StyleSheet,
 	Modal,
 	Pressable,
-	Picker,
 	Dimensions,
 	Image,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 
 import { UserContext } from "../context/context";
 
@@ -164,7 +164,7 @@ const DrawerNavigation = ({ navigation, route }) => {
 						<Picker
 							style={styles.input}
 							selectedValue={genreValue}
-							onChange={(itemValue) => setGenreValue(itemValue.target.value)}
+							onValueChange={(itemValue) => setGenreValue(itemValue)}
 						>
 							{genres.map((genre) => {
 								return (
@@ -186,7 +186,7 @@ const DrawerNavigation = ({ navigation, route }) => {
 						<Picker
 							style={styles.input}
 							selectedValue={sortByValue}
-							onChange={(itemValue) => setSortByValue(itemValue.target.value)}
+							onChange={(itemValue) => setSortByValue(itemValue)}
 						>
 							{sort.map((sortBy) => {
 								return (

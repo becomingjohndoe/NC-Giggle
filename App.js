@@ -27,6 +27,7 @@ export default function App() {
 		});
 		setIsLoading(false);
 	}, []);
+	console.disableYellowBox = true;
 
 	if (isLoading) return <Text>Loading...</Text>;
 	return (
@@ -57,8 +58,24 @@ export default function App() {
 									options={{ headerShown: false }}
 									initialParams={{ newUser: setUser }}
 								/>
-								<Stack.Screen name="Chats" component={Chats}></Stack.Screen>
-								<Stack.Screen name="GigDetails" component={GigDetails} />
+								<Stack.Screen
+									name="Chats"
+									component={Chats}
+									options={{
+										headerStyle: {
+											backgroundColor: "#344CB7",
+										},
+									}}
+								></Stack.Screen>
+								<Stack.Screen
+									name="GigDetails"
+									component={GigDetails}
+									options={{
+										headerStyle: {
+											backgroundColor: "#344CB7",
+										},
+									}}
+								/>
 							</>
 						)}
 					</Stack.Navigator>

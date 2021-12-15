@@ -8,7 +8,9 @@ export default function GigDetails({ navigation, route }) {
 	const Tab = createMaterialTopTabNavigator();
 	console.log(route);
 	return (
-		<Tab.Navigator>
+		<Tab.Navigator
+			screenOptions={{ headerStyle: { backgroundColor: "#344CB7" } }}
+		>
 			<Tab.Screen
 				name="Home"
 				component={Home}

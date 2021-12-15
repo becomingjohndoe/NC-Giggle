@@ -122,8 +122,8 @@ const styles = StyleSheet.create({
 		margin: 5,
 		padding: 10,
 		borderRadius: 30,
-		backgroundColor: "#00BCD4",
-		color: "#fff",
+		backgroundColor: "#EBE645",
+		color: "black",
 	},
 	fromMeDisplayName: {
 		alignSelf: "flex-end",
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
 		margin: 5,
 		padding: 10,
 		borderRadius: 30,
-		backgroundColor: "#E0E0E0",
+		backgroundColor: "#577BC1",
 	},
 	fromThemDisplayName: {
 		alignSelf: "flex-start",
@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
 	},
 	container: {
 		flex: 1,
+		backgroundColor: "#000957",
 	},
 	messageInput: {
 		height: 40,
@@ -157,6 +158,7 @@ const styles = StyleSheet.create({
 		padding: 5,
 		borderRadius: 30,
 		flexGrow: 1,
+		backgroundColor: "#fff",
 	},
 	messageAndSend: {
 		flexDirection: "row",
