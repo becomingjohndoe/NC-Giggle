@@ -88,7 +88,7 @@ const ExpandableComponent = ({ item, onClickFunction }) => {
 							item.subcategory[0].val,
 							item.subcategory[2].val,
 							item.image,
-							item
+							item.gig
 						).then(() => {
 							addUserToChatGroup(item.id);
 						});
@@ -130,11 +130,11 @@ export default function GigScreen(props) {
 					isExpanded: false,
 					category_name: gig.name,
 					id: gig.id,
+					gig: gig,
 					image: selectBestImage(gig.images),
 					subcategory: [
 						{ val: gig.dates.start.localDate },
 						{ val: gig.dates.start.localTime },
-						{ val: gig.dates.status.code },
 						{ val: gig._embedded.venues[0].name },
 					],
 				};
