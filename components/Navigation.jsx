@@ -24,6 +24,7 @@ import ChatsList from "./ChatsList";
 import { TextInput } from "react-native-gesture-handler";
 import { getUserInfo } from "../firebase";
 import CustomDrawer from "./CustomDrawer";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const Drawer = createDrawerNavigator();
 
@@ -82,12 +83,14 @@ const DrawerNavigation = ({ navigation, route }) => {
   useEffect(() => {
     getUserInfo().then((user) => {
       if (user) {
+
         setUserCity(user.city);
         setInitialCity(user.city);
         setInitialGenre(user.genrePreferences);
       }
       //   console.log(initialGenre, sortByValue, initialCity);
       getGigsForHomePage(user.genrePreferences, sortByValue, initialCity).then(
+
         (results) => {
           setGigs(results);
         }
@@ -104,7 +107,17 @@ const DrawerNavigation = ({ navigation, route }) => {
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawer {...props} />}
         initialRouteName="Home"
-        screenOptions={{ headerStyle: { backgroundColor: "#344CB7" } }}
+
+        screenOptions={{
+          drawerActiveBackgroundColor: "#577BC1",
+          drawerActiveTintColor: "#EBE645",
+          drawerLabelStyle: {
+            color: "#fff",
+          },
+          headerStyle: { backgroundColor: "#344CB7" },
+          headerTintColor: "#fff",
+        }}
+
       >
         {gigs ? (
           <Drawer.Screen
@@ -112,6 +125,11 @@ const DrawerNavigation = ({ navigation, route }) => {
             children={() => <GigScreen events={gigs} />}
             options={{
               headerTitle: "Gigs",
+
+              drawerIcon: () => (
+                <Ionicons name="home-outline" size={22} color={"#EBE645"} />
+              ),
+
               headerRight: () => (
                 <>
                   <>
@@ -148,10 +166,29 @@ const DrawerNavigation = ({ navigation, route }) => {
         <Drawer.Screen
           name="Profile"
           component={UserProfile}
+
+          options={{
+            drawerIcon: () => (
+              <Ionicons name="person-outline" size={22} color={"#EBE645"} />
+            ),
+          }}
           initialParams={route.params}
         />
         {/* <Drawer.Screen name="Chatroom" component={Chats} /> */}
-        <Drawer.Screen name="ChatsList" component={ChatsList} />
+        <Drawer.Screen
+          name="Crowds"
+          component={ChatsList}
+          options={{
+            drawerIcon: () => (
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                size={22}
+                color={"#EBE645"}
+              />
+            ),
+          }}
+        />
+
       </Drawer.Navigator>
       <View>
         <Modal visible={modalVisible} animationType="slide">
