@@ -83,12 +83,14 @@ const DrawerNavigation = ({ navigation, route }) => {
   useEffect(() => {
     getUserInfo().then((user) => {
       if (user) {
-        console.log(user);
+
         setUserCity(user.city);
         setInitialCity(user.city);
-        setInitialGenre(user.genrePrefrences[0]);
+        setInitialGenre(user.genrePreferences);
       }
-      getGigsForHomePage(initialGenre, sortByValue, initialCity).then(
+      //   console.log(initialGenre, sortByValue, initialCity);
+      getGigsForHomePage(user.genrePreferences, sortByValue, initialCity).then(
+
         (results) => {
           setGigs(results);
         }
@@ -105,6 +107,7 @@ const DrawerNavigation = ({ navigation, route }) => {
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawer {...props} />}
         initialRouteName="Home"
+
         screenOptions={{
           drawerActiveBackgroundColor: "#577BC1",
           drawerActiveTintColor: "#EBE645",
@@ -114,6 +117,7 @@ const DrawerNavigation = ({ navigation, route }) => {
           headerStyle: { backgroundColor: "#344CB7" },
           headerTintColor: "#fff",
         }}
+
       >
         {gigs ? (
           <Drawer.Screen
@@ -121,9 +125,11 @@ const DrawerNavigation = ({ navigation, route }) => {
             children={() => <GigScreen events={gigs} />}
             options={{
               headerTitle: "Gigs",
+
               drawerIcon: () => (
                 <Ionicons name="home-outline" size={22} color={"#EBE645"} />
               ),
+
               headerRight: () => (
                 <>
                   <>
@@ -160,6 +166,7 @@ const DrawerNavigation = ({ navigation, route }) => {
         <Drawer.Screen
           name="Profile"
           component={UserProfile}
+
           options={{
             drawerIcon: () => (
               <Ionicons name="person-outline" size={22} color={"#EBE645"} />
@@ -181,6 +188,7 @@ const DrawerNavigation = ({ navigation, route }) => {
             ),
           }}
         />
+
       </Drawer.Navigator>
       <View>
         <Modal visible={modalVisible} animationType="slide">
