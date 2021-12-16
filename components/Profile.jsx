@@ -6,17 +6,20 @@ import {
   StyleSheet,
   Dimensions,
   Pressable,
+  Picker,
 } from "react-native";
 import { getAuth } from "firebase/auth";
 import React, { useEffect } from "react";
 import { updateUser } from "../firebase";
 import MultiSelect from "react-native-multiple-select";
 export default function Profile({ navigation, route }) {
-  console.log(route);
+  // console.log(route);
   const [userData, setUserData] = React.useState({ isNewUser: false });
   const [isLoading, setIsLoading] = React.useState(true);
+  const [genreValue, setGenreValue] = React.useState("");
   const auth = getAuth();
   const genres = [
+    { id: "", name: "Pick favorite genre" },
     { id: "KnvZfZ7vAvv", name: "Alternative" },
     { id: "KnvZfZ7vAve", name: "Ballads/Romantic" },
     { id: "KnvZfZ7vAvd", name: "Blues" },
@@ -41,9 +44,7 @@ export default function Profile({ navigation, route }) {
     { id: "KnvZfZ7vAeA", name: "Rock" },
     { id: "KnvZfZ7vAeF", name: "World" },
   ];
-  const onSelectedItemsChange = (selectedItems) => {
-    setUserData({ ...userData, genrePreferences: selectedItems });
-  };
+
   useEffect(() => {
     if (auth.currentUser) {
       setIsLoading(false);
@@ -91,12 +92,25 @@ export default function Profile({ navigation, route }) {
           setUserData({ ...userData, profile_picture: text })
         }
       />
-      <MultiSelect
-        items={genres}
-        uniqueKey="id"
-        onSelectedItemsChange={onSelectedItemsChange}
-        selectedItems={userData.genrePreferences}
-      />
+      <Picker
+        style={styles.input}
+        selectedValue={genreValue}
+        onChange={(itemValue) => {
+          setGenreValue(itemValue.target.value);
+
+          setUserData({
+            ...userData,
+            genrePreferences: itemValue.target.value,
+          });
+        }}
+      >
+        {genres.map((genre) => {
+          return (
+            <Picker.Item key={genre.id} value={genre.id} label={genre.name} />
+          );
+        })}
+      </Picker>
+
       <Pressable
          style={({ pressed }) => [
           { opacity: pressed ? 0.5 : 1.0 }, 
