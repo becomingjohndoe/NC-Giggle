@@ -20,7 +20,6 @@ export default function App() {
 
 	// check if user is loggen into firebase
 	useEffect(() => {
-		console.log(auth.currentUser);
 		setIsLoading(true);
 		checkNewuser().then((u) => {
 			setUser(u);

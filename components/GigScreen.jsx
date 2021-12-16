@@ -124,7 +124,6 @@ export default function GigScreen(props) {
 
 	const contentFormat = (results) => {
 		return results.map((gig) => {
-			console.log(gig, "gig");
 			if (gig.images !== undefined) {
 				return {
 					isExpanded: false,
@@ -168,17 +167,13 @@ export default function GigScreen(props) {
 	};
 
 	useEffect(() => {
-		console.log(props.events, "event");
 		let newContentFormat = contentFormat(props.events);
 		setListDataSource(newContentFormat);
-		// console.log("gigscreen");
 	}, [props.events]);
-	//   console.log(listDataSource);
 	return (
 		<SafeAreaView style={stylesRedesign.container}>
 			<View>
 				<ScrollView>
-					{/* {console.log("render")} */}
 					{listDataSource.map((item, key) => {
 						return (
 							<ExpandableComponent

@@ -6,7 +6,6 @@ import { createMaterialTopTabNavigator } from "@react-navigation/material-top-ta
 
 export default function GigDetails({ navigation, route }) {
 	const Tab = createMaterialTopTabNavigator();
-	console.log(route);
 	return (
 		<Tab.Navigator
 			screenOptions={{ headerStyle: { backgroundColor: "#344CB7" } }}

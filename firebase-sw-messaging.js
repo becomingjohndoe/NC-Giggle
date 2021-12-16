@@ -17,7 +17,6 @@ const auth = getAuth();
 const db = getFirestore();
 // Saves a new message to Cloud Firestore.
 async function saveMessage(messageText, id) {
-	console.log(auth.currentUser);
 	// Add a new message entry to the Firebase database.
 	try {
 		const chatDocRef = doc(db, "chats", id);
@@ -44,7 +43,6 @@ export const createChatGroup = async (
 	eventImage,
 	event
 ) => {
-	console.log(event, "firebase");
 	const chatDocRef = doc(db, "chats", chatId);
 	const docSnap = await getDoc(chatDocRef);
 	if (!docSnap.exists()) {

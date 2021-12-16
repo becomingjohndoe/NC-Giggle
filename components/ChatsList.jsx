@@ -19,10 +19,9 @@ export default function ChatsList({ navigation }) {
 
 	React.useEffect(() => {
 		getChatsForUser().then((result) => {
-			console.log(result);
 			setChats(result);
 		});
-	});
+	}, []);
 
 	return (
 		<View style={styles.container}>
@@ -31,7 +30,6 @@ export default function ChatsList({ navigation }) {
 			) : (
 				<ScrollView>
 					{chats.map((chatroom) => {
-						console.log(chatroom, "chatroom.gig");
 						const date = new Date(chatroom.gig.dates.start.localDate);
 						const time = chatroom.gig.dates.start.localTime;
 						return (

@@ -13,11 +13,10 @@ import {
 	StyleSheet,
 	Modal,
 	Pressable,
-	Picker,
 	Dimensions,
 	Image,
 } from "react-native";
-
+import { PickerIOS } from "@react-native-picker/picker";
 import { UserContext } from "../context/context";
 
 import ChatsList from "./ChatsList";
@@ -30,7 +29,6 @@ const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = ({ navigation, route }) => {
 	const { userParams } = useContext(UserContext);
-	// console.log(userParams);
 	const [modalVisible, setModalVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(true);
 	const [genreValue, setGenreValue] = useState("");
@@ -40,7 +38,6 @@ const DrawerNavigation = ({ navigation, route }) => {
 	const [initialGenre, setInitialGenre] = useState(userParams.genre);
 	const [gigs, setGigs] = useState([{}]);
 	const [genres, setGenres] = useState([
-		{ value: "", label: "-" },
 		{ value: "KnvZfZ7vAvv", label: "Alternative" },
 		{ value: "KnvZfZ7vAve", label: "Ballads/Romantic" },
 		{ value: "KnvZfZ7vAvd", label: "Blues" },
@@ -83,7 +80,6 @@ const DrawerNavigation = ({ navigation, route }) => {
 	useEffect(() => {
 		getUserInfo().then((user) => {
 			if (user) {
-				console.log(user);
 				setUserCity(user.city);
 				setInitialCity(user.city);
 				setInitialGenre(user.genrePrefrences[0]);
@@ -95,7 +91,6 @@ const DrawerNavigation = ({ navigation, route }) => {
 			);
 		});
 		setIsLoading(false);
-		// console.log("here", userParams);
 	}, [initialCity]);
 	if (isLoading) {
 		return <Text>Loading</Text>;
@@ -186,21 +181,21 @@ const DrawerNavigation = ({ navigation, route }) => {
 							style={{ width: 375, height: 200 }}
 						></Image>
 						<Text style={styles.text}>Select a genre:</Text>
-						<Picker
-							style={styles.input}
+						<PickerIOS
+							itemStyle={styles.picker}
 							selectedValue={genreValue}
-							onChange={(itemValue) => setGenreValue(itemValue.target.value)}
+							onValueChange={(itemValue) => setGenreValue(itemValue)}
 						>
 							{genres.map((genre) => {
 								return (
-									<Picker.Item
+									<PickerIOS.Item
 										key={genre.value}
 										value={genre.value}
 										label={genre.label}
 									/>
 								);
 							})}
-						</Picker>
+						</PickerIOS>
 						<Text style={styles.text}>City:</Text>
 						<TextInput
 							style={styles.input}
@@ -208,21 +203,21 @@ const DrawerNavigation = ({ navigation, route }) => {
 							onChange={(city) => setUserCity(city.target.value)}
 						/>
 						<Text style={styles.text}>Sort By:</Text>
-						<Picker
-							style={styles.input}
+						<PickerIOS
+							itemStyle={styles.picker}
 							selectedValue={sortByValue}
-							onChange={(itemValue) => setSortByValue(itemValue.target.value)}
+							onValueChange={(itemValue) => setSortByValue(itemValue)}
 						>
 							{sort.map((sortBy) => {
 								return (
-									<Picker.Item
+									<PickerIOS.Item
 										key={sortBy.value}
 										value={sortBy.value}
 										label={sortBy.label}
 									/>
 								);
 							})}
-						</Picker>
+						</PickerIOS>
 
 						<Pressable
 							style={styles.button}
@@ -268,6 +263,14 @@ const styles = StyleSheet.create({
 		color: "#EBE645",
 		fontSize: 24,
 		height: 40,
+		width: Dimensions.get("window").width,
+	},
+	picker: {
+		marginBottom: 30,
+		// backgroundColor: "#577BC1",
+		color: "#fff",
+		fontSize: 24,
+		height: 100,
 		width: Dimensions.get("window").width,
 	},
 });

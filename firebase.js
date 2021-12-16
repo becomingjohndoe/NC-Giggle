@@ -42,7 +42,7 @@ const db = getFirestore();
 export const createUser = async (email, password) => {
 	createUserWithEmailAndPassword(auth, email, password)
 		.then(() => {
-			console.log("User created successfully");
+			alert("User created successfully");
 		})
 		.catch((error) => {
 			alert(error);
@@ -64,13 +64,7 @@ export const signInWithGoogle = async () => {
 };
 
 export const getGoogleLogIn = async () => {
-	getRedirectResult(auth, provider)
-		.then((result) => {
-			console.log(result);
-		})
-		.catch((error) => {
-			console.log(error);
-		});
+	getRedirectResult(auth, provider);
 };
 
 export const signOutUser = async () => {
@@ -117,7 +111,7 @@ onAuthStateChanged(auth, (user) => {
 			}
 		});
 	} catch (error) {
-		console.log(error);
+		alert(error);
 	}
 });
 

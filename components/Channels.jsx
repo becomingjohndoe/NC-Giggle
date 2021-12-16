@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import Chats from "./Chats";
 export default function Channels({ navigation, route }) {
-	console.log(route);
 	return (
 		<View>
 			<Text> Channels </Text>
