@@ -44,7 +44,10 @@ export default function Login({ navigation, route }) {
         </View>
       <View style={styles.buttonsView}>
         <Pressable
-          style={styles.button}
+        style={({ pressed }) => [
+          { opacity: pressed ? 0.5 : 1.0 }, 
+          styles.button
+        ]}
           color="blue"
           onPress={() => {
             signIn(email, password).then(() => {
@@ -55,7 +58,10 @@ export default function Login({ navigation, route }) {
           <Text style={styles.text}>Log In</Text>
         </Pressable>
         <Pressable
-          style={styles.button}
+        style={({ pressed }) => [
+          { opacity: pressed ? 0.5 : 1.0 }, 
+          styles.button
+        ]}
           onPress={() => {
             navigation.navigate("Sign Up");
           }}
@@ -104,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     color: "#EBE645",
-    padding: 7
+    padding: 7,
   },
   eye: {
     flexDirection: "row",

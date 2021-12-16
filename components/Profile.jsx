@@ -98,7 +98,10 @@ export default function Profile({ navigation, route }) {
         selectedItems={userData.genrePreferences}
       />
       <Pressable
-        style={styles.button}
+         style={({ pressed }) => [
+          { opacity: pressed ? 0.5 : 1.0 }, 
+          styles.button
+        ]}
         onPress={() => {
           updateUser(userData).then(() => {
             route.params.newUser(true);
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "700",
     color: "#EBE645",
-    padding: 20,
+    padding: 7,
 
   },
 });

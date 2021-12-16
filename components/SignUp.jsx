@@ -35,7 +35,10 @@ export default function SignUp({ navigation }) {
       />
       <Pressable
         color="blue"
-        style={styles.button}
+        style={({ pressed }) => [
+          { opacity: pressed ? 0.5 : 1.0 }, 
+          styles.button
+        ]}
         onPress={() => {
           createUser(email, password, navigation).then(() => {
             navigation.navigate("Profile");
