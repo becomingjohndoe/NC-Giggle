@@ -117,10 +117,12 @@ const UserProfile = ({ route }) => {
 const styles = StyleSheet.create({
 	container: {
 		backgroundColor: "#000957",
+		height: "100%",
 	},
 	facebookCard: {
 		backgroundColor: "#344CB7",
 		padding: 0,
+		paddingBottom: 10,
 		margin: 10,
 		borderRadius: 10,
 		// flex: 1,
@@ -167,7 +169,6 @@ const styles = StyleSheet.create({
 		margin: 15,
 	},
 	eventDetails: {
-		flex: 1,
 		flexDirection: "column",
 		justifyContent: "space-around",
 		alignItems: "flex-start",

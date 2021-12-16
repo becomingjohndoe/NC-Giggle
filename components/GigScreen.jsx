@@ -194,6 +194,7 @@ export default function GigScreen(props) {
 const stylesRedesign = StyleSheet.create({
 	container: {
 		backgroundColor: "#000957",
+		height: "100%",
 	},
 	facebookCard: {
 		backgroundColor: "#344CB7",

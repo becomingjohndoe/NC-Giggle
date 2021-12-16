@@ -74,8 +74,8 @@ const DrawerNavigation = ({ navigation, route }) => {
 	const filter = () => {
 		getGigsForHomePage(genreValue, sortByValue, userCity).then((results) => {
 			setGigs(results);
+			setModalVisible(!modalVisible);
 		});
-		setModalVisible(!modalVisible);
 	};
 	useEffect(() => {
 		getUserInfo().then((user) => {
@@ -200,7 +200,7 @@ const DrawerNavigation = ({ navigation, route }) => {
 						<TextInput
 							style={styles.input}
 							defaultValue={userCity}
-							onChange={(city) => setUserCity(city.target.value)}
+							onChangeText={(city) => setUserCity(city)}
 						/>
 						<Text style={styles.text}>Sort By:</Text>
 						<PickerIOS
