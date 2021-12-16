@@ -42,12 +42,13 @@ export default function App() {
                   options={{ headerShown: false }}
                   initialParams={{ newUser: setUser }}
                 />
-                <Stack.Screen name="Sign Up" component={SignUp} />
+                <Stack.Screen name="Sign Up" component={SignUp}  options={{ headerShown: false }}/>
                 <Stack.Screen
                   name="Profile"
                   component={Profile}
                   options={{ headerShown: false }}
                   initialParams={{ newUser: setUser }}
+
                 />
               </>
             ) : (
@@ -67,3 +68,4 @@ export default function App() {
     </>
   );
 }
+

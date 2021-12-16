@@ -167,29 +167,32 @@ export default function GigScreen(props) {
     setListDataSource(array);
   };
 
-  useEffect(() => {
-    let newContentFormat = contentFormat(props.events);
-    setListDataSource(newContentFormat);
-  }, [props.events]);
-  return (
-    <SafeAreaView style={stylesRedesign.container}>
-      <View>
-        <ScrollView>
-          {listDataSource.map((item, key) => {
-            return (
-              <ExpandableComponent
-                key={key.toString()}
-                item={item}
-                onClickFunction={() => {
-                  updateLayout(key);
-                }}
-              />
-            );
-          })}
-        </ScrollView>
-      </View>
-    </SafeAreaView>
-  );
+	useEffect(() => {
+		let newContentFormat = contentFormat(props.events);
+		setListDataSource(newContentFormat);
+	}, [props.events]);
+	return (
+		<View style={stylesRedesign.container}>
+		<SafeAreaView style={stylesRedesign.container}>
+			<View >
+				<ScrollView>
+					{/* {console.log("render")} */}
+					{listDataSource.map((item, key) => {
+						return (
+							<ExpandableComponent
+								key={key.toString()}
+								item={item}
+								onClickFunction={() => {
+									updateLayout(key);
+								}}
+							/>
+						);
+					})}
+				</ScrollView>
+			</View>
+		</SafeAreaView>
+		</View >
+	);
 }
 
 const stylesRedesign = StyleSheet.create({
@@ -255,80 +258,80 @@ const stylesRedesign = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#000957",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  header: {
-    flexDirection: "row",
-    padding: 10,
-  },
-  titleText: {
-    flex: 1,
-    fontWeight: "bold",
-  },
-  headerBtn: {
-    textAlign: "center",
-    justifyContent: "center",
-    color: "red",
-  },
-  item: {
-    backgroundColor: "orange",
-    padding: 20,
-  },
-  itemText: {
-    fontWeight: "500",
-  },
-  content: {
-    paddingLeft: 10,
-    paddingRight: 10,
-    backgroundColor: "#fff",
-  },
-  text: {
-    padding: 10,
-  },
-  seperator: {
-    height: 0.5,
-    backgroundColor: "#c8c8c8",
-    width: "100%",
-  },
-  gigContainer: {
-    flexGrow: 0,
-  },
-  gigCard: {
-    flexGrow: 0,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  gigInfo: {
-    fontWeight: "700",
-  },
-  gigInfoBody: {
-    lineHeight: 15 * 1.5,
-    textAlign: "center",
-    marginTop: 20,
-  },
-  appButtonContainer: {
-    elevation: 8,
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 10,
-    margin: 15,
-  },
-  appButtonText: {
-    fontSize: 18,
-    color: "black",
-    fontWeight: "bold",
-    alignSelf: "center",
-    textTransform: "uppercase",
-  },
-  clickedAppBtnContainer: {
-    elevation: 8,
-    backgroundColor: "#EBE645",
-    borderRadius: 10,
-    padding: 10,
-    margin: 15,
-  },
+	container: {
+		flexGrow: 0,
+		backgroundColor: "#000957",
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	header: {
+		flexDirection: "row",
+		padding: 10,
+	},
+	titleText: {
+		flex: 1,
+		fontWeight: "bold",
+	},
+	headerBtn: {
+		textAlign: "center",
+		justifyContent: "center",
+		color: "red",
+	},
+	item: {
+		backgroundColor: "orange",
+		padding: 20,
+	},
+	itemText: {
+		fontWeight: "500",
+	},
+	content: {
+		paddingLeft: 10,
+		paddingRight: 10,
+		backgroundColor: "#fff",
+	},
+	text: {
+		padding: 10,
+	},
+	seperator: {
+		height: 0.5,
+		backgroundColor: "#c8c8c8",
+		width: "100%",
+	},
+	gigContainer: {
+		flexGrow: 0,
+	},
+	gigCard: {
+		flexGrow: 0,
+		alignItems: "center",
+		justifyContent: "center",
+	},
+	gigInfo: {
+		fontWeight: "700",
+	},
+	gigInfoBody: {
+		lineHeight: 15 * 1.5,
+		textAlign: "center",
+		marginTop: 20,
+	},
+	appButtonContainer: {
+		elevation: 8,
+		backgroundColor: "#fff",
+		borderRadius: 10,
+		padding: 10,
+		margin: 15,
+	},
+	appButtonText: {
+		fontSize: 18,
+		color: "black",
+		fontWeight: "bold",
+		alignSelf: "center",
+		textTransform: "uppercase",
+	},
+	clickedAppBtnContainer: {
+		elevation: 8,
+		backgroundColor: "#EBE645",
+		borderRadius: 10,
+		padding: 10,
+		margin: 15,
+	},
 });

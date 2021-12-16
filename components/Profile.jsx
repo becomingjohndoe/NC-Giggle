@@ -59,7 +59,7 @@ export default function Profile({ navigation, route }) {
         source={require("../images/3.png")}
         style={{ width: 375, height: 200 }}
       ></Image>
-      <Text style={styles.text}>{auth.currentUser.displayName} Profile</Text>
+      {/* <Text style={styles.text}>{auth.currentUser.displayName} Profile</Text> */}
       <TextInput
         placeholder={auth.currentUser.displayName || "name"}
         placeholderTextColor="#EBE645"
@@ -112,14 +112,17 @@ export default function Profile({ navigation, route }) {
       </Picker>
 
       <Pressable
-        style={styles.button}
+         style={({ pressed }) => [
+          { opacity: pressed ? 0.5 : 1.0 }, 
+          styles.button
+        ]}
         onPress={() => {
           updateUser(userData).then(() => {
             route.params.newUser(true);
           });
         }}
       >
-        <Text style={styles.text}>Update Profile</Text>
+        <Text style={styles.text}>Confirm</Text>
       </Pressable>
     </View>
   );
@@ -132,16 +135,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  buttonsView: {
-    flex: 1,
-  },
   input: {
     marginBottom: 30,
     backgroundColor: "#577BC1",
     color: "#EBE645",
     fontSize: 24,
     height: 40,
-    width: Dimensions.get("window").width,
+    width: Dimensions.get("window").width - 50,
+    borderRadius: 10,
+    padding: 10,
   },
   button: {
     backgroundColor: "#577BC1",
@@ -152,10 +154,13 @@ const styles = StyleSheet.create({
     paddingBottom: 5,
     elevation: 2,
     width: Dimensions.get("window").width / 2,
+    borderRadius: 10,
   },
   text: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "700",
     color: "#EBE645",
+    padding: 7,
+
   },
 });
