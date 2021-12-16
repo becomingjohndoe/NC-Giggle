@@ -111,8 +111,8 @@ const DrawerNavigation = ({ navigation, route }) => {
           drawerLabelStyle: {
             color: "#fff",
           },
-          headerStyle: { backgroundColor: "#344CB7" },
-          headerTintColor: "#fff",
+          headerStyle: { backgroundColor: "#000957", borderBottomColor: "#000957" },
+          headerTintColor: "#EBE645",
         }}
       >
         {gigs ? (
@@ -120,18 +120,21 @@ const DrawerNavigation = ({ navigation, route }) => {
             name="Home"
             children={() => <GigScreen events={gigs} />}
             options={{
-              headerTitle: "Gigs",
+              headerTitle: "",
               drawerIcon: () => (
                 <Ionicons name="home-outline" size={22} color={"#EBE645"} />
               ),
               headerRight: () => (
                 <>
                   <>
-                    <Button
+                    <Pressable
+                     style={({ pressed }) => [
+                      { opacity: pressed ? 0.5 : 1.0 }
+                    ]}
                       onPress={() => setModalVisible(!modalVisible)}
-                      title="Filter"
-                      color="#577BC1"
-                    />
+                    > 
+                    <Text style={styles.filterButton}>Filter</Text>
+                    </Pressable>
                   </>
                 </>
               ),
@@ -142,15 +145,18 @@ const DrawerNavigation = ({ navigation, route }) => {
             name="Home"
             component={ErrorScreen}
             options={{
-              headerTitle: "Gigs",
+              headerTitle: "",
               headerRight: () => (
                 <>
                   <>
-                    <Button
+                  <Pressable
+                     style={({ pressed }) => [
+                      { opacity: pressed ? 0.5 : 1.0 }
+                    ]}
                       onPress={() => setModalVisible(!modalVisible)}
-                      title="Filter"
-                      color="gray"
-                    />
+                    > 
+                    <Text style={styles.filterButton}>Filter</Text>
+                    </Pressable>
                   </>
                 </>
               ),
@@ -161,6 +167,7 @@ const DrawerNavigation = ({ navigation, route }) => {
           name="Profile"
           component={UserProfile}
           options={{
+            headerTitle: "",
             drawerIcon: () => (
               <Ionicons name="person-outline" size={22} color={"#EBE645"} />
             ),
@@ -172,6 +179,7 @@ const DrawerNavigation = ({ navigation, route }) => {
           name="Crowds"
           component={ChatsList}
           options={{
+            headerTitle: "",
             drawerIcon: () => (
               <Ionicons
                 name="chatbox-ellipses-outline"
@@ -189,7 +197,7 @@ const DrawerNavigation = ({ navigation, route }) => {
               source={require("../images/3.png")}
               style={{ width: 375, height: 200 }}
             ></Image>
-            <Text style={styles.text}>Select a genre:</Text>
+            <Text style={styles.text}>Genre:</Text>
             <Picker
               style={styles.input}
               selectedValue={genreValue}
@@ -207,7 +215,7 @@ const DrawerNavigation = ({ navigation, route }) => {
             </Picker>
             <Text style={styles.text}>City:</Text>
             <TextInput
-              style={styles.input}
+              style={styles.inputText}
               defaultValue={userCity}
               onChange={(city) => setUserCity(city.target.value)}
             />
@@ -229,7 +237,10 @@ const DrawerNavigation = ({ navigation, route }) => {
             </Picker>
 
             <Pressable
-              style={styles.button}
+              style={({ pressed }) => [
+                { opacity: pressed ? 0.5 : 1.0 }, 
+                styles.button
+              ]}
               onPress={() => {
                 filter();
               }}
@@ -252,8 +263,8 @@ const styles = StyleSheet.create({
 		height: Dimensions.get("window").height,
 	},
 	text: {
-		fontSize: 24,
-		fontWeight: "700",
+		fontSize: 20,
+		fontWeight: "500",
 		color: "#EBE645",
 	},
 	button: {
@@ -264,8 +275,9 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		padding: 5,
 		elevation: 2,
-		width: Dimensions.get("window").width -40,
+		width: Dimensions.get("window").width -150,
 		marginTop: 10,
+    borderRadius: 10
 	},
 	input: {
 		marginBottom: 20,
@@ -273,8 +285,29 @@ const styles = StyleSheet.create({
 		color: "#EBE645",
 		fontSize: 24,
 		height: 40,
-		alignItems: "center"
+		alignItems: "center",
+    borderRadius: 10
+    // padding: 10
 		// width: Dimensions.get("window").width,
 	},
+  inputText: {
+		marginBottom: 20,
+		backgroundColor: "#577BC1",
+		color: "#EBE645",
+		fontSize: 24,
+		height: 40,
+		alignItems: "center",
+    padding: 10,
+    borderRadius: 10
+		// width: Dimensions.get("window").width,
+	},
+  filterButton: { 
+    colour: "black",
+    backgroundColor: "#EBE645",
+    padding: 10,
+    marginRight: 10,
+    fontSize: 16,
+    borderRadius: 10
+  }
 });
 export default DrawerNavigation;
