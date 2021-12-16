@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
 	},
 	appButtonContainer: {
 		elevation: 8,
-		backgroundColor: "#fff",
+		backgroundColor: "#EBE645",
 		borderRadius: 10,
 		padding: 10,
 		margin: 15,
@@ -177,15 +177,26 @@ const styles = StyleSheet.create({
 		fontSize: 15,
 		padding: 1,
 	},
+	eventDetailsEnd: {
+		flex: 1,
+		flexDirection: "column",
+		justifyContent: "space-around",
+		alignItems: "flex-start",
+		paddingLeft: 15,
+		color: "white",
+		fontSize: 14,
+		paddingBottom: 20,
+	},
 	date: {
 		fontSize: 15,
 		color: "white",
 	},
 	title: {
-		fontSize: 20,
+		fontSize: 25,
 		fontWeight: "bold",
 		color: "white",
 		padding: 10,
+		textAlign: "center",
 	},
 	venue: {
 		fontSize: 15,

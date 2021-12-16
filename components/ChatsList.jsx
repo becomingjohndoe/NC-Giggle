@@ -10,9 +10,8 @@ import {
 	Linking,
 } from "react-native";
 import React from "react";
-import { Link } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
+
 
 export default function ChatsList({ navigation }) {
 	const [chats, setChats] = React.useState([]);
@@ -91,7 +90,7 @@ export default function ChatsList({ navigation }) {
 }
 const styles = StyleSheet.create({
 	container: {
-		// flex: 1,
+		flex: 1,
 		backgroundColor: "#000957",
 	},
 	facebookCard: {

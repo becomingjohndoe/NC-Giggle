@@ -8,12 +8,8 @@ import {
 	ScrollView,
 	TouchableOpacity,
 	LayoutAnimation,
-	Platform,
-	Button,
-	Linking,
 } from "react-native";
 import { useState } from "react";
-import { getGigsForHomePage } from "../utils/api";
 
 import {
 	addUserToChatGroup,
@@ -171,23 +167,25 @@ export default function GigScreen(props) {
 		setListDataSource(newContentFormat);
 	}, [props.events]);
 	return (
-		<SafeAreaView style={stylesRedesign.container}>
-			<View>
-				<ScrollView>
-					{listDataSource.map((item, key) => {
-						return (
-							<ExpandableComponent
-								key={key.toString()}
-								item={item}
-								onClickFunction={() => {
-									updateLayout(key);
-								}}
-							/>
-						);
-					})}
-				</ScrollView>
-			</View>
-		</SafeAreaView>
+		<View style={stylesRedesign.container}>
+			<SafeAreaView style={stylesRedesign.container}>
+				<View>
+					<ScrollView>
+						{listDataSource.map((item, key) => {
+							return (
+								<ExpandableComponent
+									key={key.toString()}
+									item={item}
+									onClickFunction={() => {
+										updateLayout(key);
+									}}
+								/>
+							);
+						})}
+					</ScrollView>
+				</View>
+			</SafeAreaView>
+		</View>
 	);
 }
 
@@ -256,7 +254,7 @@ const stylesRedesign = StyleSheet.create({
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
+		flexGrow: 0,
 		backgroundColor: "#000957",
 		alignItems: "center",
 		justifyContent: "center",
