@@ -1,21 +1,85 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
+import React, { useEffect } from "react";
+import { Text } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { onAuthStateChanged, getAuth } from "@firebase/auth";
+import { checkNewuser } from "./firebase";
+import { UserProvider } from "./context/context";
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
+import Profile from "./components/Profile";
+import Chats from "./components/Chats";
+import DrawerNavigation from "./components/Navigation";
+import GigDetails from "./components/GigDetails";
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+	const [user, setUser] = React.useState(false);
+	const [isLoading, setIsLoading] = React.useState(true);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+	const auth = getAuth();
+	const Stack = createNativeStackNavigator();
+
+	// check if user is loggen into firebase
+	useEffect(() => {
+		setIsLoading(true);
+		checkNewuser().then((u) => {
+			setUser(u);
+		});
+		setIsLoading(false);
+	}, []);
+	console.disableYellowBox = true;
+
+	if (isLoading) return <Text>Loading...</Text>;
+	return (
+		<>
+			<UserProvider>
+				<NavigationContainer>
+					<Stack.Navigator>
+						{!user ? (
+							<>
+								<Stack.Screen
+									name="Login"
+									component={Login}
+									initialParams={{ newUser: setUser }}
+								/>
+								<Stack.Screen name="Sign Up" component={SignUp} />
+								<Stack.Screen
+									name="Profile"
+									component={Profile}
+									options={{ headerShown: false }}
+									initialParams={{ newUser: setUser }}
+								/>
+							</>
+						) : (
+							<>
+								<Stack.Screen
+									name="navigator"
+									component={DrawerNavigation}
+									options={{ headerShown: false }}
+									initialParams={{ newUser: setUser }}
+								/>
+								<Stack.Screen
+									name="Chats"
+									component={Chats}
+									options={{
+										headerStyle: {
+											backgroundColor: "#344CB7",
+										},
+									}}
+								></Stack.Screen>
+								<Stack.Screen
+									name="GigDetails"
+									component={GigDetails}
+									options={{
+										headerStyle: {
+											backgroundColor: "#344CB7",
+										},
+									}}
+								/>
+							</>
+						)}
+					</Stack.Navigator>
+				</NavigationContainer>
+			</UserProvider>
+		</>
+	);
+}
