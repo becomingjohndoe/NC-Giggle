@@ -12,7 +12,6 @@ import {
 import React from "react";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-
 export default function ChatsList({ navigation }) {
 	const [chats, setChats] = React.useState([]);
 
@@ -52,7 +51,7 @@ export default function ChatsList({ navigation }) {
 									<Text style={styles.venue}>{chatroom.venue}</Text>
 								</View>
 
-								<TouchableOpacity
+								{/* <TouchableOpacity
 									style={styles.goToChatroomButton}
 									onPress={() => {
 										navigation.navigate("Chats", {
@@ -62,7 +61,7 @@ export default function ChatsList({ navigation }) {
 									}}
 								>
 									<Text style={styles.buttonInner}>Go to Chatroom</Text>
-								</TouchableOpacity>
+								</TouchableOpacity> */}
 								<TouchableOpacity
 									style={styles.goToChatroomButton}
 									onPress={() => {
